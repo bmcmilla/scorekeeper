@@ -29,14 +29,18 @@ const Register = () => {
                         name="password"
                         onChange={(e) => setPassword(e.target.value)} />
                 </div>
-                <div class="flex items-center">
-                    <button class="btn btn-primary" type="button">
-                        Sign In
+                <div class="mb-4">
+                    <button
+                        class="btn btn-primary"
+                        type="button">
+                        Register
                     </button>
                 </div>
-                <span class="py-8 text-xs">
-                    Already have an account? <A href="/login">Login here</A>
-                </span>
+                <div>
+                    <span class="text-xs">
+                        Already have an account? <A href="/login">Login here</A>
+                    </span>
+                </div>
             </form>
         </div>
     )
