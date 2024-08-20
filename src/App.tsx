@@ -3,7 +3,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
-function App() {
+const App = () => {
   return (
     <>
       <Route path="/" component={Dashboard} />

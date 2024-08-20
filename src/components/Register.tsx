@@ -7,19 +7,34 @@ const Register = () => {
     const [password, setPassword] = createSignal(''); // password of the user
 
     return (
-        <div class="register-section">
-            <form>
-                <h3>Register</h3>
-                <label>Email</label>
-                <input type="email"
-                    onChange={(e) => setEmail(e.target.value)} />
-                <label>Password</label>
-                <input
-                    type="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <button type="submit">Register</button>
-                <span>
+        <div class="w-full max-w-sm">
+            <form class="m-8">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2" for="email">
+                        Email
+                    </label>
+                    <input
+                        class="input input-bordered"
+                        type="email"
+                        name="email"
+                        onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
+                    <input
+                        class="input input-bordered"
+                        type="password"
+                        name="password"
+                        onChange={(e) => setPassword(e.target.value)} />
+                </div>
+                <div class="flex items-center">
+                    <button class="btn btn-primary" type="button">
+                        Sign In
+                    </button>
+                </div>
+                <span class="py-8 text-xs">
                     Already have an account? <A href="/login">Login here</A>
                 </span>
             </form>
