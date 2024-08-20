@@ -1,12 +1,16 @@
-import type { Component } from 'solid-js';
+import { Route } from "@solidjs/router"
+import Register from './components/Register';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
-const App: Component = () => {
+function App() {
   return (
-    <div class="flex flex-col justify-center items-center space-y-8 py-8">
-      <p class="text-4xl">Hello, world!</p>      
-      <button class="btn">Button</button>
-    </div>
+    <>
+      <Route path="/" component={Dashboard} />
+      <Route path="/login" component={Login} />
+      <Route path="register" component={Register} />
+    </>
   );
-};
+}
 
 export default App;
