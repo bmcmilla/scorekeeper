@@ -7,14 +7,14 @@ const Login = () => {
     const [password, setPassword] = createSignal('');
 
     return (
-        <div class="w-full max-w-sm">
-            <form class="m-8">
+        <div class="w-full">
+            <form class="flex flex-col justify-center items-center m-8">
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="email">
                         Email
                     </label>
                     <input
-                        class="input input-bordered"
+                        class="input input-bordered w-96"
                         type="email"
                         name="email"
                         onChange={(e) => setEmail(e.target.value)} />
@@ -24,7 +24,7 @@ const Login = () => {
                         Password
                     </label>
                     <input
-                        class="input input-bordered"
+                        class="input input-bordered w-96"
                         type="password"
                         name="password"
                         onChange={(e) => setPassword(e.target.value)} />
@@ -33,12 +33,12 @@ const Login = () => {
                     <button
                         class="btn btn-primary"
                         type="button">
-                        Login
+                        Sign In
                     </button>
                 </div>
                 <div>
                     <span class="text-xs">
-                        Don't have an account? <A href="/register">Register here</A>
+                        Don't have an account? <A href="/register" class="text-blue-600 dark:text-blue-500 hover:underline">Register here</A>
                     </span>
                 </div>
             </form>

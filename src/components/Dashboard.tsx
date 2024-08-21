@@ -2,17 +2,13 @@ import { createSignal } from "solid-js";
 
 const Dashboard = () => {
 
-    // user details
     const [user, setUser] = createSignal({});
 
     return (
-        <>
-            <div>
-                <h3>Dashboard</h3>
-                <h4>Welcome, User</h4>
-                <button type="button" class="btn">Log out</button>
-            </div>
-        </>
+        <div class="m-8">
+            <h4 class="mb-6">Welcome, User</h4>
+            <button type="button" class="btn btn-primary">Sign Out</button>
+        </div>
     )
 }
 

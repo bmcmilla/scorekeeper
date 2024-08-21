@@ -3,18 +3,18 @@ import { A } from "@solidjs/router";
 
 const Register = () => {
 
-    const [email, setEmail] = createSignal(''); // email of the user
-    const [password, setPassword] = createSignal(''); // password of the user
+    const [email, setEmail] = createSignal('');
+    const [password, setPassword] = createSignal('');
 
     return (
-        <div class="w-full max-w-sm">
-            <form class="m-8">
+        <div class="w-full">
+            <form class="flex flex-col justify-center items-center m-8">
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="email">
                         Email
                     </label>
                     <input
-                        class="input input-bordered"
+                        class="input input-bordered w-96"
                         type="email"
                         name="email"
                         onChange={(e) => setEmail(e.target.value)} />
@@ -24,7 +24,7 @@ const Register = () => {
                         Password
                     </label>
                     <input
-                        class="input input-bordered"
+                        class="input input-bordered w-96"
                         type="password"
                         name="password"
                         onChange={(e) => setPassword(e.target.value)} />
@@ -38,7 +38,7 @@ const Register = () => {
                 </div>
                 <div>
                     <span class="text-xs">
-                        Already have an account? <A href="/login">Login here</A>
+                        Already have an account? <A href="/login" class="text-blue-600 dark:text-blue-500 hover:underline">Login here</A>
                     </span>
                 </div>
             </form>
