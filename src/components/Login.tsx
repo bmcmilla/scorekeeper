@@ -7,27 +7,42 @@ const Login = () => {
     const [password, setPassword] = createSignal('');
 
     return (
-        <>
-            <form>
-                <div class="grid grid-cols-1">
-                    <h3>Login</h3>
-                    <label>Email</label>
+        <div class="w-full max-w-sm">
+            <form class="m-8">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2" for="email">
+                        Email
+                    </label>
                     <input
-                        class="input input-bordered w-full max-w-xs"
+                        class="input input-bordered"
                         type="email"
+                        name="email"
                         onChange={(e) => setEmail(e.target.value)} />
-                    <label>Password</label>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-bold mb-2" for="password">
+                        Password
+                    </label>
                     <input
-                        class="input input-bordered w-full max-w-xs"
+                        class="input input-bordered"
                         type="password"
+                        name="password"
                         onChange={(e) => setPassword(e.target.value)} />
-                    <button class="btn" type="submit">Login</button>
-                    <span>
+                </div>
+                <div class="mb-4">
+                    <button
+                        class="btn btn-primary"
+                        type="button">
+                        Login
+                    </button>
+                </div>
+                <div>
+                    <span class="text-xs">
                         Don't have an account? <A href="/register">Register here</A>
                     </span>
                 </div>
             </form>
-        </>
+        </div>
     )
 }
 

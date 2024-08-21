@@ -20,7 +20,7 @@ const Register = () => {
                         onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                    <label class="block text-sm font-bold mb-2" for="password">
                         Password
                     </label>
                     <input
