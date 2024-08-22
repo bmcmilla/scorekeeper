@@ -1,10 +1,22 @@
 import { createSignal } from "solid-js";
 import { A } from "@solidjs/router";
+import { supabase } from "../api/SupabaseClient";
 
 const Register = () => {
 
     const [email, setEmail] = createSignal('');
     const [password, setPassword] = createSignal('');
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+        try {
+            const { error } = await supabase.auth.signUp({ email: email(), password: password() });
+            if (error) throw error;
+            alert("Check your email to confirm!");
+        } catch (error) {
+            alert(error.error_description || error.message);
+        }
+    };
 
     return (
         <div class="w-full">
@@ -32,13 +44,14 @@ const Register = () => {
                 <div class="mb-4">
                     <button
                         class="btn btn-primary"
-                        type="button">
-                        Register
+                        type="button"
+                        onClick={handleRegister}>
+                        Sign Up
                     </button>
                 </div>
                 <div>
                     <span class="text-xs">
-                        Already have an account? <A href="/login" class="text-blue-600 dark:text-blue-500 hover:underline">Login here</A>
+                        Already have an account? <A href="/login" class="text-blue-600 dark:text-blue-500 hover:underline">Sign in here</A>
                     </span>
                 </div>
             </form>
