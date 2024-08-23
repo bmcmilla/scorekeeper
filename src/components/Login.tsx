@@ -8,12 +8,18 @@ const Login = () => {
     const [password, setPassword] = createSignal('');
     const navigate = useNavigate();
 
+    // FIXME needs cleanup
+    supabase.auth.onAuthStateChange((_event, session) => {
+        if (session) {
+            navigate("/");
+        }
+      });
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const { error } = await supabase.auth.signInWithPassword({ email: email(), password: password() });
             if (error) throw error;
-            navigate("/");   
         } catch (error) {
             alert(error.error_description || error.message);
         }

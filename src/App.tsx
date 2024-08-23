@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 
 const App = () => {
+
   return (
     <>
       <Route path="/" component={Dashboard} />
