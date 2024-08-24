@@ -1,12 +1,15 @@
-import { createSignal, onMount, Show } from "solid-js";
+import { createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
 
 const Dashboard = () => {
 
+    type Game = { title: string };
+
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
+    const [games, setGames] = createSignal<Game[]>();
     const navigate = useNavigate();
 
     const handleSignOut = () => {
@@ -26,6 +29,17 @@ const Dashboard = () => {
         } else {
             navigate("/login");
         }
+
+        const { data, error } = await supabase
+            .from('games')
+            .select();
+        if (!error) {
+            setGames(data.map(item => {
+                return { title: item.title }
+            }));
+        } else {
+            console.log(error);
+        }
     });
 
     return (
@@ -37,6 +51,14 @@ const Dashboard = () => {
                     class="btn btn-primary" onClick={handleSignOut}>
                     Sign Out
                 </button>
+                <div class="mt-8">
+                    <h3>Games</h3>
+                    <For each={games()}>{(game, i) =>
+                        <li>
+                            {game.title}
+                        </li>
+                    }</For>
+                </div>
             </Show>
         </div>
     )
