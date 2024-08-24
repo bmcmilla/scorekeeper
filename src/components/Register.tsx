@@ -1,18 +1,29 @@
 import { createSignal } from "solid-js";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import { supabase } from "../api/SupabaseClient";
 
 const Register = () => {
 
+    const [displayName, setDisplayName] = createSignal('');
     const [email, setEmail] = createSignal('');
     const [password, setPassword] = createSignal('');
+
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const { error } = await supabase.auth.signUp({ email: email(), password: password() });
+            const { error } = await supabase.auth.signUp({
+                email: email(),
+                password: password(),
+                options: { 
+                    data: { 
+                        display_name: displayName()
+                    }
+                }
+            });
             if (error) throw error;
-            alert("Check your email to confirm!");
+            navigate("/");
         } catch (error) {
             alert(error.error_description || error.message);
         }
@@ -21,6 +32,16 @@ const Register = () => {
     return (
         <div class="w-full">
             <form class="flex flex-col justify-center items-center m-8">
+                <div class="mb-4">
+                    <label class="block text-sm font-bold mb-2" for="displayName">
+                        Name
+                    </label>
+                    <input
+                        class="input input-bordered w-96"
+                        type="displayName"
+                        name="displayName"
+                        onChange={(e) => setDisplayName(e.target.value)} />
+                </div>
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="email">
                         Email
