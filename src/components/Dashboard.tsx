@@ -40,7 +40,19 @@ const Dashboard = () => {
         } else {
             console.log(error);
         }
+
+        tryAll();
+
     });
+
+    const tryAll = async () => {
+        let { data, error } = await supabase.from('scores').select(`
+            score,
+            players(player_name),
+            rounds(seq_num)
+          `).order('seq_num', {referencedTable: 'rounds'})
+        console.log(data);
+    }
 
     return (
         <div class="flex flex-col justify-center items-center m-8">

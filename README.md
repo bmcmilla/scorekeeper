@@ -1,7 +1,11 @@
 # Scorekeeper
 
+An unncessary scorekeeping app for retired people.
 
+## Local Development
 
-## Reference
+```
+pnpm install
+pnpm start
+```
 
-* https://www.digitalocean.com/community/tutorials/how-to-integrate-user-authentication-in-a-solidjs-app-using-supabase
