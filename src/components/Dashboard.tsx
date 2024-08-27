@@ -48,9 +48,10 @@ const Dashboard = () => {
     const tryAll = async () => {
         let { data, error } = await supabase.from('scores').select(`
             score,
-            players(player_name),
+            players(player_name, seat_position),
             rounds(seq_num)
-          `).order('seq_num', {referencedTable: 'rounds'})
+          `).order('seq_num', { referencedTable: 'rounds' })
+            .order('seat_position', { referencedTable: 'players' })
         console.log(data);
     }
 
