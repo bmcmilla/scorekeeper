@@ -1,22 +1,21 @@
 import { Game } from "./Model";
 import { supabase } from "./SupabaseClient";
 
-export async function getGame(id: number): Promise<Game> | undefined {
+export async function getGame(id: number): Promise<Game> {
 
-    let game: Game;
-
-    let { data, error } = await supabase.from('scores').select(`
+    const { data, error } = await supabase.from('scores').select(`
         score,
         players(player_name, seat_position, games(title, game_id))
       `)
         .eq('players.games.game_id', id)
         .order('players(seat_position)')
 
-    // fixme handle errors! return enumeration of reasons?
+    if (error) {
+        console.error(error.message);
+        return undefined;
+    }
 
-    game = transformToGameObject(data);
-
-    return game;
+    return transformToGameObject(data);
 }
 
 export function transformToGameObject(input): Game {
