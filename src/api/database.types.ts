@@ -32,21 +32,21 @@ export type Database = {
       }
       players: {
         Row: {
-          created_at: string
           player_id: number
           player_name: string | null
+          seat_position: number
           user_id: string | null
         }
         Insert: {
-          created_at?: string
           player_id?: number
           player_name?: string | null
+          seat_position: number
           user_id?: string | null
         }
         Update: {
-          created_at?: string
           player_id?: number
           player_name?: string | null
+          seat_position?: number
           user_id?: string | null
         }
         Relationships: []
@@ -56,21 +56,21 @@ export type Database = {
           created_at: string
           game_id: number
           round_id: number
-          seq_num: number
+          round_number: number
           user_id: string
         }
         Insert: {
           created_at?: string
           game_id: number
           round_id?: number
-          seq_num: number
+          round_number: number
           user_id?: string
         }
         Update: {
           created_at?: string
           game_id?: number
           round_id?: number
-          seq_num?: number
+          round_number?: number
           user_id?: string
         }
         Relationships: [

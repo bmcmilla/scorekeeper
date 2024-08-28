@@ -2,14 +2,14 @@ import { createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
+import { getGame } from "../api/GameClient";
+import { Game } from "../api/Model";
 
 const Dashboard = () => {
 
-    type Game = { title: string };
-
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
-    const [games, setGames] = createSignal<Game[]>();
+    const [game, setGame] = createSignal<Game>();
     const navigate = useNavigate();
 
     const handleSignOut = () => {
@@ -25,35 +25,14 @@ const Dashboard = () => {
         const user = await supabase.auth.getUser();
         if (!user.error) {
             setUser(user.data.user);
-            setLoading(false);
         } else {
             navigate("/login");
         }
 
-        const { data, error } = await supabase
-            .from('games')
-            .select();
-        if (!error) {
-            setGames(data.map(item => {
-                return { title: item.title }
-            }));
-        } else {
-            console.log(error);
-        }
-
-        tryAll();
-
-    });
-
-    const tryAll = async () => {
-        let { data, error } = await supabase.from('scores').select(`
-            score,
-            players(player_name, seat_position),
-            rounds(seq_num)
-          `).order('seq_num', { referencedTable: 'rounds' })
-            .order('seat_position', { referencedTable: 'players' })
-        console.log(data);
-    }
+        const game = await getGame(1);
+        setGame(game);
+        setLoading(false);
+    });    
 
     return (
         <div class="flex flex-col justify-center items-center m-8">
@@ -66,9 +45,10 @@ const Dashboard = () => {
                 </button>
                 <div class="mt-8">
                     <h3>Games</h3>
-                    <For each={games()}>{(game, i) =>
+                    <h2>{game().title}</h2>
+                    <For each={game().players}>{(player) =>
                         <li>
-                            {game.title}
+                            {player.name}: {JSON.stringify(player.scores)}
                         </li>
                     }</For>
                 </div>
