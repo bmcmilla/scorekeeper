@@ -8,7 +8,7 @@
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
-    "generate-types": "npx supabase gen types --lang=typescript --project-id lvxrgielifbvikhrzwzb --schema public > src/api/database.types.ts"
+    "generate-types": "pnpm exec supabase gen types --lang=typescript --project-id lvxrgielifbvikhrzwzb --schema public > src/api/database.types.ts"
   },
   "license": "MIT",
   "devDependencies": {

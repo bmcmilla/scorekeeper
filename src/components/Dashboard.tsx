@@ -30,9 +30,12 @@ const Dashboard = () => {
         }
 
         const game = await getGame(1);
-        setGame(game);
+        if (game) {
+            setGame(game);
+        }
+
         setLoading(false);
-    });    
+    });
 
     return (
         <div class="flex flex-col justify-center items-center m-8">
@@ -45,12 +48,14 @@ const Dashboard = () => {
                 </button>
                 <div class="mt-8">
                     <h3>Games</h3>
-                    <h2>{game().title}</h2>
-                    <For each={game().players}>{(player) =>
-                        <li>
-                            {player.name}: {JSON.stringify(player.scores)}
-                        </li>
-                    }</For>
+                    <Show when={game()} fallback={<h2>No games available</h2>}>
+                        <h2>{game().title}</h2>
+                        <For each={game().players}>{(player) =>
+                            <li>
+                                {player.name}: {JSON.stringify(player.scores)}
+                            </li>
+                        }</For>
+                    </Show>
                 </div>
             </Show>
         </div>
