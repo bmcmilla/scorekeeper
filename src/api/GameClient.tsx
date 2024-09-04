@@ -10,15 +10,19 @@ export async function getGame(id: number): Promise<Game> {
         .eq('players.games.game_id', id)
         .order('players(seat_position)')
 
-    if (error) {
-        console.error(error.message);
-        return undefined;
+    if (!error) {
+        return transformToGameObject(data);
     }
 
-    return transformToGameObject(data);
+    console.error(error.message);
+    return undefined;
 }
 
 export function transformToGameObject(input): Game {
+
+    if (!input[0]) {
+        return;
+    }
 
     // Extract the game title from the first entry
     const title = input[0].players.games.title;

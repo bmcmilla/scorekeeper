@@ -15,7 +15,6 @@ pnpm install
 pnpm start
 
 # With local database (requires container engine, e.g., Rancher)
-pnpm exec supabase start 
 pnpm run dev
 ```
 

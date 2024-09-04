@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "vite",
-    "dev": "vite --mode development",
+    "dev": "pnpm exec supabase start && vite --mode development",
     "build": "vite build",
     "serve": "vite preview",
     "test": "vitest",
