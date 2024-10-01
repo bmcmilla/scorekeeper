@@ -31,13 +31,12 @@ export function transformToGameObject(input): Game {
     const playersMap = new Map();
 
     input.forEach(entry => {
-        const { player_name, seat_position } = entry.players;
+        const { player_name } = entry.players;
         const { score } = entry;
 
         if (!playersMap.has(player_name)) {
             playersMap.set(player_name, {
                 name: player_name,
-                seatPosition: seat_position,
                 scores: []
             });
         }

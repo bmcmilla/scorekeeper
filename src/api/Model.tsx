@@ -1,7 +1,6 @@
 
 export type GamePlayer = {
     name: string,
-    seatPosition: number,
     scores: number[]
 }
 
