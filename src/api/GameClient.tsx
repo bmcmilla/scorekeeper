@@ -5,10 +5,11 @@ export async function getGame(id: number): Promise<Game> {
 
     const { data, error } = await supabase.from('scores').select(`
         score,
-        players(player_name, seat_position, games(title, game_id))
+        player_index,
+        games(title, players, game_id))
       `)
-        .eq('players.games.game_id', id)
-        .order('players(seat_position)')
+        .eq('games.game_id', id)
+        .order('player_index')
 
     if (!error) {
         return transformToGameObject(data);
@@ -25,14 +26,14 @@ export function transformToGameObject(input): Game {
     }
 
     // Extract the game title from the first entry
-    const title = input[0].players.games.title;
+    const title = input[0].games.title;
 
     // Create a map to store players and their scores
     const playersMap = new Map();
 
     input.forEach(entry => {
-        const { player_name } = entry.players;
-        const { score } = entry;
+        const player_name = entry.games.players[entry.player_index];
+        const score  = entry.score;
 
         if (!playersMap.has(player_name)) {
             playersMap.set(player_name, {
@@ -54,26 +55,4 @@ export function transformToGameObject(input): Game {
     };
 }
 
-// type RoundsByPlayer = {
-//     [key: string]: { rounds: number[] }
-// };
-// const roundsByPlayer = {} as RoundsByPlayer;
-
-// data.forEach(item => {
-
-//     const playerName = item.players.player_name;
-//     const seatPosition = item.players.seat_position;
-//     const score = item.score;
-
-//     if (!roundsByPlayer[playerName]) {
-//         roundsByPlayer[playerName] = {
-//             rounds: []
-//         }
-//     }
-
-//     players[playerName].rounds.push(score);
-// });
-
-// // Convert the map to an array and ensure each player has a complete rounds array
-// game.players = Object.values(players);
 

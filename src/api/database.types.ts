@@ -13,112 +13,55 @@ export type Database = {
         Row: {
           created_at: string
           game_id: number
+          players: string[]
           title: string | null
           user_id: string | null
         }
         Insert: {
           created_at?: string
           game_id?: number
+          players?: string[]
           title?: string | null
           user_id?: string | null
         }
         Update: {
           created_at?: string
           game_id?: number
+          players?: string[]
           title?: string | null
           user_id?: string | null
         }
         Relationships: []
-      }
-      players: {
-        Row: {
-          player_id: number
-          player_name: string | null
-          seat_position: number
-          user_id: string | null
-        }
-        Insert: {
-          player_id?: number
-          player_name?: string | null
-          seat_position: number
-          user_id?: string | null
-        }
-        Update: {
-          player_id?: number
-          player_name?: string | null
-          seat_position?: number
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      rounds: {
-        Row: {
-          created_at: string
-          game_id: number
-          round_id: number
-          round_number: number
-          user_id: string
-        }
-        Insert: {
-          created_at?: string
-          game_id: number
-          round_id?: number
-          round_number: number
-          user_id?: string
-        }
-        Update: {
-          created_at?: string
-          game_id?: number
-          round_id?: number
-          round_number?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "rounds_game_id_fkey"
-            columns: ["game_id"]
-            isOneToOne: false
-            referencedRelation: "games"
-            referencedColumns: ["game_id"]
-          },
-        ]
       }
       scores: {
         Row: {
-          player_id: number
-          round_id: number
+          game_id: number
+          player_index: number
           score: number
           score_id: number
           user_id: string
         }
         Insert: {
-          player_id: number
-          round_id: number
+          game_id: number
+          player_index: number
           score: number
           score_id?: number
           user_id?: string
         }
         Update: {
-          player_id?: number
-          round_id?: number
+          game_id?: number
+          player_index?: number
           score?: number
           score_id?: number
           user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "scores_player_id_fkey"
-            columns: ["player_id"]
+            foreignKeyName: "scores_game_id_fkey"
+            columns: ["game_id"]
             isOneToOne: false
-            referencedRelation: "players"
-            referencedColumns: ["player_id"]
-          },
-          {
-            foreignKeyName: "scores_round_id_fkey"
-            columns: ["round_id"]
-            isOneToOne: false
-            referencedRelation: "rounds"
-            referencedColumns: ["round_id"]
+            referencedRelation: "games"
+            referencedColumns: ["game_id"]
           },
         ]
       }
