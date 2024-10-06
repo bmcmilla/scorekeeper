@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "vite",
+    "start": "vite --mode production",
     "dev": "pnpm exec supabase start && vite --mode development",
     "build": "vite build",
     "serve": "vite preview",
