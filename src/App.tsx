@@ -11,7 +11,7 @@ const App = () => {
       <Route path="/" component={Dashboard} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
-      <Route path="/game" component={Game} />      
+      <Route path="/game/:id" component={Game} />      
     </>
   );
 }

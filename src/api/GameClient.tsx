@@ -1,6 +1,27 @@
 import { Game } from "./Model";
 import { supabase } from "./SupabaseClient";
 
+export async function getGames(): Promise<{id: number, title: string}[]> {
+
+    const { data, error } = await supabase.from('games').select(`
+        game_id,
+        title,
+        created_at
+      `).order('created_at');
+
+    if (!error) {
+        return data.map((item) => {
+            return {
+                id: item.game_id,
+                title: item.title
+            }
+        });
+    }
+
+    console.error(error.message);
+    return [];
+}
+
 export async function getGame(id: number): Promise<Game> {
 
     const { data, error } = await supabase.from('scores').select(`

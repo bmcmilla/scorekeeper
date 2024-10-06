@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           created_at: string
           game_id: number
+          max_score: number | null
           players: string[]
           title: string | null
           user_id: string | null
@@ -20,6 +21,7 @@ export type Database = {
         Insert: {
           created_at?: string
           game_id?: number
+          max_score?: number | null
           players?: string[]
           title?: string | null
           user_id?: string | null
@@ -27,6 +29,7 @@ export type Database = {
         Update: {
           created_at?: string
           game_id?: number
+          max_score?: number | null
           players?: string[]
           title?: string | null
           user_id?: string | null
@@ -37,6 +40,7 @@ export type Database = {
         Row: {
           game_id: number
           player_index: number
+          round_num: number | null
           score: number
           score_id: number
           user_id: string
@@ -44,6 +48,7 @@ export type Database = {
         Insert: {
           game_id: number
           player_index: number
+          round_num?: number | null
           score: number
           score_id?: number
           user_id?: string
@@ -51,6 +56,7 @@ export type Database = {
         Update: {
           game_id?: number
           player_index?: number
+          round_num?: number | null
           score?: number
           score_id?: number
           user_id?: string

@@ -2,14 +2,13 @@ import { createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
-import { getGame } from "../api/GameClient";
-import { Game } from "../api/Model";
+import { getGames } from "../api/GameClient";
 
 const Dashboard = () => {
 
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
-    const [game, setGame] = createSignal<Game>();
+    const [games, setGames] = createSignal<{ id: number, title: string }[]>();
     const navigate = useNavigate();
 
     const handleSignOut = () => {
@@ -29,9 +28,9 @@ const Dashboard = () => {
             navigate("/login");
         }
 
-        const game = await getGame(1);
-        if (game) {
-            setGame(game);
+        const games = await getGames();
+        if (games) {
+            setGames(games);
         }
 
         setLoading(false);
@@ -48,17 +47,18 @@ const Dashboard = () => {
                 </button>
                 <div class="mt-8">
                     <h3>Games</h3>
-                    <Show when={game()} fallback={<h2>No games available</h2>}>
-                        <h2>{game().title}</h2>
-                        <For each={game().players}>{(player) =>
-                            <li>
-                                {player.name}: {JSON.stringify(player.scores)}
-                            </li>
-                        }</For>
+                    <Show when={games().length > 0} fallback={<h2>No games available</h2>}>
+                        <ul>
+                            <For each={games()}>
+                                {(game) => (
+                                    <li><a class="link" href={`/game/${game.id}`}>{game.title}</a></li>
+                                )}
+                            </For>
+                        </ul>
                     </Show>
                 </div>
-            </Show>
-        </div>
+            </Show >
+        </div >
     )
 }
 

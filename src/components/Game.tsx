@@ -1,15 +1,20 @@
 import { createStore } from 'solid-js/store';
 import { createMemo, For } from 'solid-js';
+import { useParams } from "@solidjs/router";
 
 function Game() {
+
+  const params = useParams();
+  console.log(params);
+
   const [gameData, setGameData] = createStore({
-    players: [
-      { name: 'Barry', rounds: [1, 10, 11, 0] },
-      { name: 'James', rounds: [12, 20, 12, 2] },
-      { name: 'Susie', rounds: [3, 3, 13, 9] },
-      { name: 'Kathy', rounds: [5, 8, 6, 4] },
+    "players": [
+      { "name": "Barry", "rounds": [42, 4, 19, 0, 23, 15, 11, 23, 22, 31, 55, 16, 0, 29, 0, 48, 0, 48, 9, 24, 48, 0, 0, 0, 18, 0, 22] },
+      { "name": "James", "rounds": [11, 2, 9, 11, 41, 33, 0, 0, 0, 36, 56, 9, 49, 21, 38, 0, 28, 47, 3, 21, 0, 9, 11, 13, 0, 18, 0] },
+      { "name": "Susie", "rounds": [12, 0, 0, 27, 10, 0, 35, 21, 2, 0, 32, 0, 29, 0, 46, 69, 8, 37, 0, 0, 33, 18, 16, 24, 25, 10, 18] },
+      { "name": "Kathy", "rounds": [0, 14, 12, 26, 0, 19, 16, 51, 20, 32, 0, 10, 6, 46, 3, 13, 6, 0, 10, 1, 12, 32, 35, 38, 21, 10, 37] }
     ],
-    maxScore: 500,
+    "maxScore": 500,
 
     // Refactored total function
     total(playerName) {
