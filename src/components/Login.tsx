@@ -26,7 +26,7 @@ const Login = () => {
     };
 
     return (
-        <div class="w-full">
+        <div class="w-full m-8">
             <form class="flex flex-col justify-center items-center m-8">
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="email">
