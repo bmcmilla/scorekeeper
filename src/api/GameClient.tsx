@@ -28,7 +28,7 @@ export async function getGame(id: number): Promise<Game> {
         game_id,
         score,
         player_index,
-        games(title, players, max_score))
+        games(title, players, max_score, created_at))
       `)
         .eq('game_id', id)
         .order('player_index')
@@ -50,6 +50,7 @@ export function transformToGameObject(input): Game {
     const result = {
         title: input[0].games.title,
         maxScore: input[0].games.max_score,
+        createdAt: new Date(input[0].games.created_at),
         players: input[0].games.players.map(name => {
             return {
                 name: name,
