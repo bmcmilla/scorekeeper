@@ -1,5 +1,5 @@
 import { createStore, produce } from 'solid-js/store';
-import { createMemo, For, onMount, Show } from 'solid-js';
+import { createMemo, createSignal, For, onMount, Show } from 'solid-js';
 import { useParams } from "@solidjs/router";
 import { getGame } from '../api/GameClient';
 
@@ -13,6 +13,8 @@ import { getGame } from '../api/GameClient';
  * Delete round button
  * Fix dark mode
  * Unit testable data/stats functions
+ * Grid layout leaders/new round
+ * Check valid new round scores
 */
 
 function Game() {
@@ -30,6 +32,7 @@ function Game() {
     );
   });
 
+  const [editor, setEditor] = createSignal(false);
   const [gameData, setGameData] = createStore({
     title: '',
     maxScore: 0,
@@ -54,16 +57,25 @@ function Game() {
     },
   });
 
-  const addRound = () => {
-    const newRound = gameData.players.map(() =>
-      Math.floor(Math.random() * 61)
-    );
-    const zeroIndex = Math.floor(Math.random() * newRound.length);
-    newRound[zeroIndex] = 0; // Ensure one zero
+  const newRound = () => {
+    setEditor(!editor())
+  };
 
-    newRound.forEach((score, index) => {
-      setGameData('players', index, 'rounds', (rounds) => [...rounds, score]);
-    });
+  const onSubmit = (e) => {
+    const round = [
+      Number.parseInt(e.target[0].value) || 0,
+      Number.parseInt(e.target[1].value) || 0,
+      Number.parseInt(e.target[2].value) || 0,
+      Number.parseInt(e.target[3].value) || 0,
+    ];
+    setGameData(
+      produce(game => {
+        for (let i = 0; i < game.players.length; i++) {
+          game.players[i].rounds.push(round[i]);
+        }
+      }
+      ));
+      setEditor(false);
   };
 
   // Memo to reverse rounds reactively
@@ -86,7 +98,7 @@ function Game() {
         <div class="flex justify-between items-center mb-4">
           <div>
             <div class="badge badge-secondary badge-outline">TENS</div>
-            <h2 class="text-xl">{gameData.title} (${gameData.maxScore})</h2>
+            <h2 class="text-xl">{gameData.title} ({gameData.maxScore})</h2>
             <div class="text-sm text-neutral-500">27 September 2024</div>
           </div>
           <div>
@@ -110,14 +122,15 @@ function Game() {
             </button>
           </div>
         </div>
-        {/* Summary */}
-        <Show when={gameData.players.length > 0}>
+
+        {/* Stats */}
+        <Show when={!editor() && gameData.players.length > 0}>
           <div class="stats shadow mb-4 w-full">
             <div class="stat">
               <div class="stat-title">Rounds Played</div>
               <div class="stat-value">{gameData.players.length > 0 ? gameData.players[0].rounds.length : ''} </div>
               <div class="stat-actions">
-                <button class="btn btn-sm btn-primary" onClick={addRound}>
+                <button class="btn btn-sm btn-primary" onClick={newRound}>
                   + Round {gameData.players[0].rounds.length + 1}
                 </button>
               </div>
@@ -133,7 +146,43 @@ function Game() {
           </div>
         </Show>
 
-        {/* Leaderboard */}
+        {/* New Round */}
+        <Show when={editor()}>
+          <h3 class="py-2">Round {gameData.players[0].rounds.length + 1}</h3>
+          <div>
+            <form action="#" onSubmit={onSubmit}>
+              <For each={Object.values(gameData.players)}>{(player, index) => (
+                <div class="flex flex-col-1 " key={index()}>
+                  <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
+                    <span class="px-4 text-left text-xl font-extrabold">
+                      {index() + 1}
+                    </span>
+                    <div class="avatar placeholder px-2">
+                      <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
+                        <span class="text-xl">{player.name.charAt(0)}</span>
+                      </div>
+                    </div>
+                    <span class="flex-1 text-left text-sm px-2">{player.name}</span>
+                    <div class="w-20">
+                      <input
+                        type="text"
+                        placeholder="0"
+                        id={"new-round-" + index()}
+                        class="input input-bordered input-lg w-full max-w-xs text-center" />
+                    </div>
+                  </div>
+                </div>
+              )}
+              </For>
+              <div class="flex items-center justify-center space-x-4">
+                <div><button type="submit" class="btn btn-primary">Add Round</button></div>
+                <div><button class="btn" onClick={() => setEditor(false)}>Cancel</button></div>
+              </div>
+            </form>
+          </div>
+        </Show>
+
+        {/* Leaders */}
         <h3 class="py-2">Leaders</h3>
         <div>
           <For each={leaders()}>{(player, index) => (
