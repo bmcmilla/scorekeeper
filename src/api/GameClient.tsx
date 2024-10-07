@@ -39,14 +39,18 @@ export async function getGames(): Promise<{ id: number, title: string }[]> {
 
 export async function getGame(id: number): Promise<Game> {
 
-    const { data, error } = await supabase.from('scores').select(`
+    const { data, error } = await supabase.from('games').select(`
         game_id,
-        score,
-        player_index,
-        games(title, players, max_score, created_at))
+        title,
+        players,
+        max_score,
+        created_at,
+        players,
+        scores(player_index, round_num, score))
       `)
         .eq('game_id', id)
-        .order('player_index')
+        .order('round_num', { referencedTable: 'scores', ascending: true })
+        .order('player_index', { referencedTable: 'scores', ascending: true })
 
     if (!error) {
         return transformToGameObject(data);
@@ -56,41 +60,32 @@ export async function getGame(id: number): Promise<Game> {
     return undefined;
 }
 
-export async function countRounds(id: number): Promise<number> {
-    const { data, error } = await supabase.from('scores')
-        .select(`*, cities(count)`)
-        .eq('game_id', id)
-
-        if (!error) {
-            return transformToGameObject(data);
-        }
-    
-        console.error(error.message);
-        return undefined;    
-}
-
 export function transformToGameObject(input): Game {
 
-    if (!input[0]) {
+    const data = input && input.length > 0 ? input[0] : undefined;
+
+    if (!data) {
         return;
     }
 
     const result = {
-        id: input[0].game_id,
-        title: input[0].games.title,
-        maxScore: input[0].games.max_score,
-        createdAt: new Date(input[0].games.created_at),
-        players: input[0].games.players.map(name => {
+        id: data.game_id,
+        title: data.title,
+        maxScore: data.max_score,
+        createdAt: new Date(data.created_at),
+        players: data.players.map(player => {
             return {
-                name: name,
+                name: player,
                 rounds: []
             }
         })
     };
 
-    input.forEach(entry => {
-        result.players[entry.player_index].rounds.push(entry.score);
-    });
+    if (data.scores) {
+        data.scores.forEach(row => {
+            result.players[row.player_index].rounds.push(row.score);
+        });
+    }
 
     return result;
 }

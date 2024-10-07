@@ -52,6 +52,8 @@ function Game() {
     },
 
     biggestLoser() {
+      if (this.countRounds() === 0) return undefined;
+      
       const lastRound = this.players.map((p) => p.rounds[p.rounds.length - 1]);
       const loserIndex = lastRound.indexOf(Math.max(...lastRound));
       const loserPlayer = this.players[loserIndex];
@@ -161,14 +163,16 @@ function Game() {
                   </button>
                 </div>
               </div>
-              <div class="stat">
-                <div class="stat-title">Biggest Loser</div>
-                <div class="stat-value">{gameData.biggestLoser().name}</div>
-                <div class="stat-desc">
-                  {gameData.biggestLoser().score} points in Round{' '}
-                  {gameData.biggestLoser().round}
+              <Show when={gameData.countRounds() > 0}>
+                <div class="stat">
+                  <div class="stat-title">Biggest Loser</div>
+                  <div class="stat-value">{gameData.biggestLoser().name}</div>
+                  <div class="stat-desc">
+                    {gameData.biggestLoser().score} points in Round{' '}
+                    {gameData.biggestLoser().round}
+                  </div>
                 </div>
-              </div>
+              </Show>
             </div>
           </Show>
 
