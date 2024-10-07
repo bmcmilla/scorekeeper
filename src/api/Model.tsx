@@ -1,5 +1,6 @@
 
 export type Game = {
+    id: number,
     title: string,
     maxScore: number,
     createdAt: Date,

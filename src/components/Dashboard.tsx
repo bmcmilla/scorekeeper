@@ -2,7 +2,7 @@ import { createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
-import { getGames } from "../api/GameClient";
+import { createGame, getGames } from "../api/GameClient";
 
 const Dashboard = () => {
 
@@ -19,6 +19,13 @@ const Dashboard = () => {
     const handleSignIn = () => {
         navigate("/login");
     }
+
+    const handleNewGame = async () => {
+        const id = await createGame();
+        if (id) {
+            navigate(`/game/${id}`);
+        }
+    }    
 
     onMount(async () => {
         const user = await supabase.auth.getUser();
@@ -58,6 +65,9 @@ const Dashboard = () => {
                     </Show>
                 </div>
             </Show >
+
+            <div class="my-4"><button class="btn btn-primary" onClick={handleNewGame}>New Game</button></div>            
+
         </div >
     )
 }

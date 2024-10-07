@@ -25,6 +25,7 @@ function Game() {
     const game = await getGame(Number.parseInt(params.id));
     setGameData(
       produce(g => {
+        g.id = game.id;
         g.title = game.title;
         g.maxScore = game.maxScore;
         g.players = game.players;
@@ -37,6 +38,7 @@ function Game() {
   const [loading, setLoading] = createSignal(true);
   const [editor, setEditor] = createSignal(false);
   const [gameData, setGameData] = createStore({
+    id: 0,
     title: '',
     maxScore: 0,
     players: [],
@@ -59,6 +61,10 @@ function Game() {
         round: loserPlayer.rounds.length,
       };
     },
+
+    countRounds() {
+      return this.players.length > 0 ? this.players[0].rounds.length : 0;
+    }
   });
 
   const newRound = () => {
@@ -148,10 +154,10 @@ function Game() {
             <div class="stats shadow mb-4 w-full">
               <div class="stat">
                 <div class="stat-title">Rounds Played</div>
-                <div class="stat-value">{gameData.players.length > 0 ? gameData.players[0].rounds.length : ''} </div>
+                <div class="stat-value">{gameData.countRounds()} </div>
                 <div class="stat-actions">
                   <button class="btn btn-sm btn-primary" onClick={newRound}>
-                    + Round {gameData.players[0].rounds.length + 1}
+                    + Round {gameData.countRounds() + 1}
                   </button>
                 </div>
               </div>
@@ -168,7 +174,7 @@ function Game() {
 
           {/* New Round */}
           <Show when={editor()}>
-            <h3 class="py-2">Round {gameData.players[0].rounds.length + 1}</h3>
+            <h3 class="py-2">Round {gameData.countRounds() + 1}</h3>
             <div>
               <form action="#" onSubmit={onSubmit}>
                 <For each={Object.values(gameData.players)}>{(player, index) => (
@@ -286,7 +292,7 @@ function Game() {
             </table>
             <div class="mt-4">
               <button class="btn btn-sm btn-primary" onClick={undoRound}>
-                - Round {gameData.players[0].rounds.length}
+                - Round {gameData.countRounds()}
               </button>
             </div>
           </div>
