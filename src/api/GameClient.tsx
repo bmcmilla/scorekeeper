@@ -49,7 +49,7 @@ export function transformToGameObject(input): Game {
 
     const result = {
         title: input[0].games.title,
-        maxScore: input[0].games.maxScore,
+        maxScore: input[0].games.max_score,
         players: input[0].games.players.map(name => {
             return {
                 name: name,

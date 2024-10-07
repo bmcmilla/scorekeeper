@@ -73,7 +73,7 @@ function Game() {
   });
 
   // Memo to sort players by total score
-  const leaderboardPlayers = createMemo(() =>
+  const leaders = createMemo(() =>
     [...gameData.players].sort(
       (a, b) => gameData.total(a.name) - gameData.total(b.name)
     )
@@ -86,7 +86,7 @@ function Game() {
         <div class="flex justify-between items-center mb-4">
           <div>
             <div class="badge badge-secondary badge-outline">TENS</div>
-            <h2 class="text-xl">{gameData.title}</h2>
+            <h2 class="text-xl">{gameData.title} (${gameData.maxScore})</h2>
             <div class="text-sm text-neutral-500">27 September 2024</div>
           </div>
           <div>
@@ -134,9 +134,9 @@ function Game() {
         </Show>
 
         {/* Leaderboard */}
-        <h3 class="py-2">Totals</h3>
+        <h3 class="py-2">Leaders</h3>
         <div>
-          {leaderboardPlayers().map((player, index) => (
+          {leaders().map((player, index) => (
             <div class="flex flex-col-1 " key={index}>
               <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
                 <span class="px-4 text-left text-xl font-extrabold">
