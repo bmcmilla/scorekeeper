@@ -136,11 +136,11 @@ function Game() {
         {/* Leaderboard */}
         <h3 class="py-2">Leaders</h3>
         <div>
-          {leaders().map((player, index) => (
-            <div class="flex flex-col-1 " key={index}>
+          <For each={leaders()}>{(player, index) => (
+            <div class="flex flex-col-1 " key={index()}>
               <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
                 <span class="px-4 text-left text-xl font-extrabold">
-                  {index + 1}
+                  {index() + 1}
                 </span>
                 <div class="avatar placeholder px-2">
                   <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
@@ -164,7 +164,8 @@ function Game() {
                 </div>
               </div>
             </div>
-          ))}
+          )}
+          </For>
         </div>
 
         {/* Game Details */}
