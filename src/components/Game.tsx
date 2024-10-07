@@ -182,7 +182,7 @@ function Game() {
             <div>
               <form action="#" onSubmit={onSubmit}>
                 <For each={Object.values(gameData.players)}>{(player, index) => (
-                  <div class="flex flex-col-1 " key={index()}>
+                  <div class="flex flex-col-1">
                     <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
                       <span class="px-4 text-left text-xl font-extrabold">
                         {index() + 1}
@@ -217,7 +217,7 @@ function Game() {
           <h3 class="py-2">Leaders</h3>
           <div>
             <For each={leaders()}>{(player, index) => (
-              <div class="flex flex-col-1 " key={index()}>
+              <div class="flex flex-col-1">
                 <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
                   <span class="px-4 text-left text-xl font-extrabold">
                     {index() + 1}
@@ -258,7 +258,7 @@ function Game() {
                   <th class="text-xs text-center">Total</th>
                   <For each={reversedRounds()}>
                     {(roundIndex) => (
-                      <th key={roundIndex} class="px-4 py-2 text-sm">
+                      <th class="px-4 py-2 text-sm">
                         {roundIndex + 1}
                       </th>
                     )}
@@ -267,8 +267,8 @@ function Game() {
               </thead>
               <tbody>
                 <For each={gameData.players}>
-                  {(player, playerIndex) => (
-                    <tr key={playerIndex()}>
+                  {(player) => (
+                    <tr>
                       <td class="px-2 py-2 text-sm">
                         <div class="flex flex-col items-center">
                           <div class="avatar placeholder">
