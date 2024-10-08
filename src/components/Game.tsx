@@ -250,7 +250,7 @@ function Game() {
 
           {/* Round Details */}
           <Show when={gameData.countRounds() > 0}>
-            <h3 class="py-2">Rounds</h3>
+            <h3 class="mt-4">Rounds</h3>
             <div class="overflow-x-auto justify-left">
               <table class="table-zebra table-xs">
                 <thead>
