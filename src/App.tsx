@@ -1,17 +1,11 @@
-import { Route } from "@solidjs/router"
-import Register from './components/Register';
-import Login from './components/Login';
-import Dashboard from './components/Dashboard';
-import Game from "./components/Game";
+import Navbar from "./components/Navbar";
 
-const App = () => {
+const App = (props) => {
 
   return (
     <>
-      <Route path="/" component={Dashboard} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/game/:id" component={Game} />      
+      <Navbar />
+      {props.children}
     </>
   );
 }

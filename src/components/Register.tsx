@@ -30,14 +30,14 @@ const Register = () => {
     };
 
     return (
-        <div class="w-full m-8">
-            <form class="flex flex-col justify-center items-center m-8">
+        <div class="flex flex-col justify-center m-8">
+            <form>
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="displayName">
                         Name
                     </label>
                     <input
-                        class="input input-bordered w-96"
+                        class="input input-bordered w-80"
                         type="displayName"
                         name="displayName"
                         onChange={(e) => setDisplayName(e.target.value)} />
@@ -47,7 +47,7 @@ const Register = () => {
                         Email
                     </label>
                     <input
-                        class="input input-bordered w-96"
+                        class="input input-bordered w-80"
                         type="email"
                         name="email"
                         onChange={(e) => setEmail(e.target.value)} />
@@ -57,7 +57,7 @@ const Register = () => {
                         Password
                     </label>
                     <input
-                        class="input input-bordered w-96"
+                        class="input input-bordered w-80"
                         type="password"
                         name="password"
                         onChange={(e) => setPassword(e.target.value)} />
