@@ -1,9 +1,12 @@
 
-export type Game = {
+export type GameMetadata = {
     id: number,
     title: string,
+    createdAt: Date
+}
+
+export type Game = GameMetadata & {
     maxScore: number,
-    createdAt: Date,
     players: {
         name: string,
         rounds: number[]

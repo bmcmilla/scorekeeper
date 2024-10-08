@@ -2,13 +2,15 @@ import { createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
-import { createGame, getGames } from "../api/GameClient";
+import { getGames } from "../api/GameClient";
+import { GameMetadata } from "../api/Model";
+import NewGame from "./NewGame";
 
 const Dashboard = () => {
 
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
-    const [games, setGames] = createSignal<{ id: number, title: string }[]>();
+    const [games, setGames] = createSignal<GameMetadata[]>();
     const navigate = useNavigate();
 
     const handleSignOut = () => {
@@ -19,13 +21,6 @@ const Dashboard = () => {
     const handleSignIn = () => {
         navigate("/login");
     }
-
-    const handleNewGame = async () => {
-        const id = await createGame();
-        if (id) {
-            navigate(`/game/${id}`);
-        }
-    }    
 
     onMount(async () => {
         const user = await supabase.auth.getUser();
@@ -52,22 +47,28 @@ const Dashboard = () => {
                     class="btn btn-primary" onClick={handleSignOut}>
                     Sign Out
                 </button>
+                <button class="btn btn-primary" onClick="my_modal_3.showModal()">New Game</button>
+                <dialog id="my_modal_3" class="modal modal-bottom sm:modal-middle">
+                    <div class="modal-box">
+                        <NewGame/>
+                    </div>
+                </dialog>
                 <div class="mt-8">
-                    <h3>Games</h3>
+                    <h3 class="text-lg font-bold">Saved Games</h3>
                     <Show when={games().length > 0} fallback={<h2>No games available</h2>}>
-                        <ul>
-                            <For each={games()}>
+                        <div class="flex flex-col">
+                            <For each={games().toReversed()}>
                                 {(game) => (
-                                    <li><a class="link" href={`/game/${game.id}`}>{game.title}</a></li>
+                                    <div class="pt-2">
+                                        <div><a class="link" href={`/game/${game.id}`}>{game.title}</a></div>
+                                        <div class="text-neutral text-sm">{game.createdAt.toDateString()}</div>
+                                    </div>
                                 )}
                             </For>
-                        </ul>
+                        </div>
                     </Show>
                 </div>
             </Show >
-
-            <div class="my-4"><button class="btn btn-primary" onClick={handleNewGame}>New Game</button></div>            
-
         </div >
     )
 }

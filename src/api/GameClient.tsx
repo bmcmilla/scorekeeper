@@ -1,4 +1,4 @@
-import { Game } from "./Model";
+import { Game, GameMetadata } from "./Model";
 import { supabase } from "./SupabaseClient";
 
 export async function createGame(): Promise<number> {
@@ -16,7 +16,7 @@ export async function createGame(): Promise<number> {
     return 0;
 }
 
-export async function getGames(): Promise<{ id: number, title: string }[]> {
+export async function getGames(): Promise<GameMetadata[]> {
 
     const { data, error } = await supabase.from('games').select(`
         game_id,
@@ -28,7 +28,8 @@ export async function getGames(): Promise<{ id: number, title: string }[]> {
         return data.map((item) => {
             return {
                 id: item.game_id,
-                title: item.title
+                title: item.title,
+                createdAt: new Date(item.created_at)
             }
         });
     }
