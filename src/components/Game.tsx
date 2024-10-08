@@ -111,11 +111,11 @@ function Game() {
   });
 
   // Memo to sort players by total score
-  const leaders = createMemo(() =>
-    [...gameData.players].sort(
+  const leaders = createMemo(() => {
+    return [...gameData.players].sort(
       (a, b) => gameData.total(a.name) - gameData.total(b.name)
     )
-  );
+  });
 
   return (
     <div class="flex items-center justify-center">
@@ -235,8 +235,7 @@ function Game() {
                       '--value':
                         (100 * gameData.total(player.name)) / gameData.maxScore,
                     }}
-                    role="progressbar"
-                  >
+                    role="progressbar">
                     <span class="text-xl font-extrabold">
                       {gameData.total(player.name)}
                     </span>
@@ -247,60 +246,56 @@ function Game() {
             </For>
           </div>
 
-          {/* Game Details */}
-          <h3 class="py-2">Rounds</h3>
-          <div class="overflow-x-auto">
-            <table class="table-auto w-full border">
-              <thead class="border">
-                <tr>
-                  <th class="text-xs text-center">Player</th>
-                  <th class="text-xs text-center">Total</th>
-                  <For each={reversedRounds()}>
-                    {(roundIndex) => (
-                      <th class="px-4 py-2 text-sm">
-                        {roundIndex + 1}
-                      </th>
+          {/* Round Details */}
+          <Show when={gameData.countRounds() > 0}>
+            <h3 class="py-2">Rounds</h3>
+            <div class="overflow-x-auto justify-left">
+              <table class="table-zebra table-xs">
+                <thead>
+                  <tr>
+                    <th class="text-xs text-center">Player</th>
+                    <For each={reversedRounds()}>
+                      {(roundIndex) => (
+                        <th class="px-4 py-2 text-sm">
+                          {roundIndex + 1}
+                        </th>
+                      )}
+                    </For>
+                  </tr>
+                </thead>
+                <tbody>
+                  <For each={gameData.players}>
+                    {(player) => (
+                      <tr>
+                        <th class="px-2 py-2 text-sm">
+                          <div class="flex flex-col items-center">
+                            <div class="avatar placeholder">
+                              <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
+                                <span class="text-xl">{player.name.charAt(0)}</span>
+                              </div>
+                            </div>
+                            <div class="text-xs">{player.name}</div>
+                          </div>
+                        </th>
+                        <For each={reversedRounds()}>
+                          {(roundIndex) => (
+                            <td class="px-4 py-2 text-center text-sm">
+                              {player.rounds[roundIndex]}
+                            </td>
+                          )}
+                        </For>
+                      </tr>
                     )}
                   </For>
-                </tr>
-              </thead>
-              <tbody>
-                <For each={gameData.players}>
-                  {(player) => (
-                    <tr>
-                      <td class="px-2 py-2 text-sm">
-                        <div class="flex flex-col items-center">
-                          <div class="avatar placeholder">
-                            <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
-                              <span class="text-xl">{player.name.charAt(0)}</span>
-                            </div>
-                          </div>
-                          <div class="text-xs">{player.name}</div>
-                        </div>
-                      </td>
-                      <td class="px-4 py-2 text-center text-sm">
-                        {gameData.total(player.name)}
-                      </td>
-                      <For each={reversedRounds()}>
-                        {(roundIndex) => (
-                          <td class="px-4 py-2 text-center text-sm">
-                            {player.rounds[roundIndex]}
-                          </td>
-                        )}
-                      </For>
-                    </tr>
-                  )}
-                </For>
-              </tbody>
-            </table>
-            <Show when={gameData.countRounds() > 0}>
-              <div class="mt-4">
-                <button class="btn btn-sm btn-primary" onClick={undoRound}>
-                  - Round {gameData.countRounds()}
-                </button>
-              </div>
-            </Show>
-          </div>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-4">
+              <button class="btn btn-sm btn-primary" onClick={undoRound}>
+                - Round {gameData.countRounds()}
+              </button>
+            </div>
+          </Show>
         </div>
       </Show>
     </div>
