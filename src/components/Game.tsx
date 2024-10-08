@@ -219,8 +219,8 @@ function Game() {
           <div>
             <For each={leaders()}>{(player, index) => (
               <div class="flex flex-col">
-                <div class="flex flex-row items-center px-2 py-2 rounded mb-2 w-full">
-                  <span class="px-4 text-left text-xl font-extrabold">
+                <div class="flex flex-row items-center px-2 py-2 rounded-xl mb-2 w-full bg-base-200">
+                  <span class="px-4 text-left text-xl text-neutral-content font-extrabold">
                     {index() + 1}
                   </span>
                   <div class="avatar placeholder px-2">
