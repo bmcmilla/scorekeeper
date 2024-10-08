@@ -34,8 +34,8 @@ const Dashboard = () => {
         <div class="flex flex-col justify-center items-center m-8">
             <Show when={!loading()} fallback={<span class="loading loading-dots loading-lg"></span>}>
                 <h4 class="mb-6">Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h4>
-                <button class="btn btn-primary" onClick="my_modal_3.showModal()">New Game</button>
-                <dialog id="my_modal_3" class="modal modal-bottom sm:modal-middle">
+                <button class="btn btn-primary" onClick="new_game_modal.showModal()">New Game</button>
+                <dialog id="new_game_modal" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
                         <NewGame />
                     </div>
