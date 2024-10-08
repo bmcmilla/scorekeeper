@@ -182,12 +182,12 @@ function Game() {
               <form action="#" onSubmit={onSubmit}>
                 <For each={Object.values(gameData.players)}>{(player, index) => (
                   <div class="flex flex-col-1">
-                    <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
+                    <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100">
                       <span class="px-4 text-left text-xl font-extrabold">
                         {index() + 1}
                       </span>
                       <div class="avatar placeholder px-2">
-                        <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
+                        <div class="bg-gray-400 text-neutral-content w-12 rounded-full">
                           <span class="text-xl">{player.name.charAt(0)}</span>
                         </div>
                       </div>
@@ -204,8 +204,7 @@ function Game() {
                 )}
                 </For>
                 <div class="flex items-center justify-center space-x-4">
-                  <div><button type="submit" class="btn btn-primary" disabled={!isRoundValid()}
-                  >Add Round</button></div>
+                  <div><button type="submit" class="btn btn-primary" disabled={!isRoundValid()}>Add Round</button></div>
                   <div><button class="btn" onClick={() => setEditor(false)}>Cancel</button></div>
                 </div>
               </form>
@@ -216,19 +215,19 @@ function Game() {
           <h3 class="py-2">Leaders</h3>
           <div>
             <For each={leaders()}>{(player, index) => (
-              <div class="flex flex-col-1">
-                <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100 dark:bg-gray-800 ">
+              <div class="flex flex-col">
+                <div class="flex flex-row items-center px-2 py-2 rounded mb-2 w-full">
                   <span class="px-4 text-left text-xl font-extrabold">
                     {index() + 1}
                   </span>
                   <div class="avatar placeholder px-2">
-                    <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
+                    <div class="bg-neutral text-neutral-content w-12 rounded-full">
                       <span class="text-xl">{player.name.charAt(0)}</span>
                     </div>
                   </div>
-                  <span class="flex-1 text-left text-sm px-2">{player.name}</span>
+                  <span class="flex-1 text-left text-md px-2">{player.name}</span>
                   <div
-                    class="radial-progress bg-transparent border-base-600 border-2"
+                    class="radial-progress bg-transparent border-base-600 border-0"
                     style={{
                       '--size': '4rem',
                       '--thickness': '6px',
@@ -267,16 +266,16 @@ function Game() {
                   <For each={gameData.players}>
                     {(player) => (
                       <tr>
-                        <th class="px-2 py-2 text-sm">
+                        <td class="px-2 py-2 text-sm">
                           <div class="flex flex-col items-center">
                             <div class="avatar placeholder">
-                              <div class="bg-gray-400 text-neutral-content dark:text-white w-12 rounded-full">
+                              <div class="bg-neutral text-neutral-content w-12 rounded-full">
                                 <span class="text-xl">{player.name.charAt(0)}</span>
                               </div>
                             </div>
                             <div class="text-xs">{player.name}</div>
                           </div>
-                        </th>
+                        </td>
                         <For each={reversedRounds()}>
                           {(roundIndex) => (
                             <td class="px-4 py-2 text-center text-sm">
