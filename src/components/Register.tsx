@@ -30,7 +30,7 @@ const Register = () => {
     };
 
     return (
-        <div class="flex flex-col justify-center m-8">
+        <div class="flex flex-col items-center m-8">
             <form>
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="displayName">
