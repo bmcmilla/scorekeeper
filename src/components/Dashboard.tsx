@@ -11,7 +11,7 @@ const Dashboard = () => {
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
     const [games, setGames] = createSignal<GameMetadata[]>();
-    
+
     const navigate = useNavigate();
 
     onMount(async () => {
@@ -48,7 +48,7 @@ const Dashboard = () => {
                                 {(game) => (
                                     <div class="pt-2">
                                         <div><a class="link" href={`/game/${game.id}`}>{game.title}</a></div>
-                                        <div class="text-neutral text-sm">{game.createdAt.toDateString()}</div>
+                                        <div class="text-sm">{game.createdAt.toDateString()}</div>
                                     </div>
                                 )}
                             </For>
