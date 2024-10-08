@@ -53,7 +53,7 @@ function Game() {
 
     biggestLoser() {
       if (this.countRounds() === 0) return undefined;
-      
+
       const lastRound = this.players.map((p) => p.rounds[p.rounds.length - 1]);
       const loserIndex = lastRound.indexOf(Math.max(...lastRound));
       const loserPlayer = this.players[loserIndex];
@@ -293,11 +293,13 @@ function Game() {
                 </For>
               </tbody>
             </table>
-            <div class="mt-4">
-              <button class="btn btn-sm btn-primary" onClick={undoRound}>
-                - Round {gameData.countRounds()}
-              </button>
-            </div>
+            <Show when={gameData.countRounds() > 0}>
+              <div class="mt-4">
+                <button class="btn btn-sm btn-primary" onClick={undoRound}>
+                  - Round {gameData.countRounds()}
+                </button>
+              </div>
+            </Show>
           </div>
         </div>
       </Show>
