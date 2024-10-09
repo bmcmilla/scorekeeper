@@ -1,5 +1,5 @@
 import { createStore, produce } from 'solid-js/store';
-import { createMemo, createSignal, For, onMount, Show } from 'solid-js';
+import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
 import { useParams } from "@solidjs/router";
 import { getGame } from '../api/GameClient';
 
@@ -36,7 +36,6 @@ function Game() {
   });
 
   const [loading, setLoading] = createSignal(true);
-  const [editor, setEditor] = createSignal(false);
   const [gameData, setGameData] = createStore({
     id: 0,
     title: '',
@@ -69,10 +68,6 @@ function Game() {
     }
   });
 
-  const newRound = () => {
-    setEditor(!editor())
-  };
-
   const undoRound = () => {
     setGameData(
       produce(game => {
@@ -83,17 +78,11 @@ function Game() {
       ));
   }
 
-  const isRoundValid = () => {
-    return true;
-  }
-
   const onSubmit = (e) => {
-    const round = [
-      Number.parseInt(e.target[0].value) || 0,
-      Number.parseInt(e.target[1].value) || 0,
-      Number.parseInt(e.target[2].value) || 0,
-      Number.parseInt(e.target[3].value) || 0,
-    ];
+    e.preventDefault();
+    const round = gameData.players.map((player, index) => {
+      return Number.parseInt(e.target[index].value) || 0;
+    });
     setGameData(
       produce(game => {
         for (let i = 0; i < game.players.length; i++) {
@@ -101,7 +90,7 @@ function Game() {
         }
       }
       ));
-    setEditor(false);
+    document.getElementById('new_round_modal').close();
   };
 
   // Memo to reverse rounds reactively
@@ -151,7 +140,7 @@ function Game() {
           </div>
 
           {/* Stats */}
-          <Show when={!editor() && gameData.players.length > 0}>
+          <Show when={gameData.players.length > 0}>
             <div class="stats shadow my-2 w-full">
               <div class="stat">
                 <div class="stat-title">Rounds Played</div>
@@ -161,15 +150,29 @@ function Game() {
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                     </svg>
-                    Round {gameData.countRounds() + 1}</button>
-                  <dialog id="new_round_modal" class="modal">
+                    Round {gameData.countRounds() + 1}
+                  </button>
+                  <dialog id="new_round_modal" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
                       <form method="dialog">
                         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                       </form>
-                      <h3 class="text-lg font-bold">Hello!</h3>
-                      <p class="py-4">Press ESC key or click on ✕ button to close</p>
-                      <button onClick={newRound}>New Round</button>
+                      <form onSubmit={onSubmit}>
+                        <h3 class="text-lg font-bold mb-2">Round {gameData.countRounds() + 1}</h3>
+                        <Index each={gameData.players}>{(player) => (
+                          <div class="grid grid-cols-2 space-x-4 space-y-2 items-center w-3/4">
+                            <label class="text-xl text-right">{player().name}</label>
+                            <input
+                              type="text"
+                              placeholder="0"
+                              id={"new-round-" + player().name}
+                              name={"new-round-" + player().name}
+                              class="input input-bordered input-lg text-xl text-center" />
+                          </div>
+                        )}
+                        </Index>
+                        <button class="btn btn-primary mt-4" type="submit">Add Round</button>
+                      </form>
                     </div>
                   </dialog>
                 </div>
@@ -184,42 +187,6 @@ function Game() {
                   </div>
                 </div>
               </Show>
-            </div>
-          </Show>
-
-          {/* New Round */}
-          <Show when={editor()}>
-            <h3 class="py-2">Round {gameData.countRounds() + 1}</h3>
-            <div>
-              <form action="#" onSubmit={onSubmit}>
-                <For each={Object.values(gameData.players)}>{(player, index) => (
-                  <div class="flex flex-col-1">
-                    <div class="flex items-center p-2 rounded mb-2 w-full bg-gray-100">
-                      <span class="px-4 text-left text-xl font-extrabold">
-                        {index() + 1}
-                      </span>
-                      <div class="avatar placeholder px-2">
-                        <div class="bg-gray-400 text-neutral-content w-12 rounded-full">
-                          <span class="text-xl">{player.name.charAt(0)}</span>
-                        </div>
-                      </div>
-                      <span class="flex-1 text-left text-sm px-2">{player.name}</span>
-                      <div class="w-20">
-                        <input
-                          type="text"
-                          placeholder="0"
-                          id={"new-round-" + index()}
-                          class="input input-bordered input-lg w-full max-w-xs text-center" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-                </For>
-                <div class="flex items-center justify-center space-x-4">
-                  <div><button type="submit" class="btn btn-primary" disabled={!isRoundValid()}>Add Round</button></div>
-                  <div><button class="btn" onClick={() => setEditor(false)}>Cancel</button></div>
-                </div>
-              </form>
             </div>
           </Show>
 
