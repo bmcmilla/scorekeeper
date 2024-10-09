@@ -123,9 +123,9 @@ function Game() {
         <div class="w-96 px-4 py-4">
           {/* Header */}
           <div class="flex justify-between items-center mb-4">
-            <div>
-              <div class="badge badge-secondary badge-outline">TENS</div>
-              <h2 class="text-xl">{gameData.title} ({gameData.maxScore})</h2>
+            <div class=" flex flex-col">
+              <div class="badge badge-secondary badge-outline text-xs">Tens</div>
+              <h2 class="text-xl mt-2">{gameData.title} ({gameData.maxScore})</h2>
               <div class="text-sm text-neutral-500">{gameData.createdAt.toDateString()}</div>
             </div>
             <div>
