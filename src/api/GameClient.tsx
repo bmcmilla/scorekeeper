@@ -1,11 +1,12 @@
 import { Game, GameMetadata } from "./Model";
 import { supabase } from "./SupabaseClient";
 
-export async function createGame(): Promise<number> {
+export async function createGame(players: string[]): Promise<number> {
 
     const { data, error } = await supabase.from('games').insert({
         title: generateTitle(new Date()),
-        max_score: 500
+        max_score: 500,
+        players: players
     }).select();
 
     if (!error) {

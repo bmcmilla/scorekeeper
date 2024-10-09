@@ -4,16 +4,10 @@ import { useParams } from "@solidjs/router";
 import { getGame } from '../api/GameClient';
 
 /** TODO
- * Loading state
  * Error state (game not found)
- * no auth state
- * New game state
+ * No auth state
  * Title / maxScore editor
- * Add round form
- * Delete round button
- * Fix dark mode
  * Unit testable data/stats functions
- * Grid layout leaders/new round
  * Check valid new round scores
 */
 
@@ -109,12 +103,12 @@ function Game() {
   return (
     <div class="flex items-center justify-center">
       <Show when={!loading()} fallback={<span class="loading loading-dots loading-lg"></span>}>
-        <div class="w-96 px-4 py-4">
+        <div class="w-96 px-4">
           {/* Header */}
           <div class="flex justify-between items-center">
-            <div class=" flex flex-col">
+            <div class="flex flex-col">
               <div class="badge badge-secondary badge-outline text-xs">Tens</div>
-              <h2 class="text-xl mt-2">{gameData.title} ({gameData.maxScore})</h2>
+              <h2 class="text-xl mt-2">{gameData.title}</h2>
               <div class="text-sm text-neutral-500">{gameData.createdAt.toDateString()}</div>
             </div>
             <div>
@@ -146,7 +140,7 @@ function Game() {
                 <div class="stat-title">Rounds Played</div>
                 <div class="stat-value">{gameData.countRounds()} </div>
                 <div class="stat-actions">
-                  <button class="btn btn-primary" onClick="new_round_modal.showModal()">
+                  <button class="btn btn-primary btn-sm" onClick="new_round_modal.showModal()">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                     </svg>
