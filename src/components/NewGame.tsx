@@ -50,10 +50,10 @@ const NewGame = () => {
             <Index each={players}>
                 {(player, index) => (
                     <div class="py-2">
-                        <div class="flex flex-row items-center">
+                        <div class="flex flex-row items-center px-4">
                             <div class="text-lg font-bold px-4">{index + 1}</div>
-                            <input type="text" placeholder={playerPlaceholder(index)} class="input input-bordered w-64" name={"player-" + index} id={"player-" + index} oninput={handleInput}/>
-                            <Show when={index === players.length - 1}>
+                            <input type="text" placeholder={playerPlaceholder(index)} class="input input-bordered" name={"player-" + index} id={"player-" + index} oninput={handleInput}/>
+                            <Show when={index === players.length - 1} fallback={<></>}>
                                 <div class="flex flex-row items-center">
                                     <div class="ml-4">
                                         <button class="btn btn-circle btn-sm" onClick={addPlayer}>
