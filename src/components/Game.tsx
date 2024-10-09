@@ -122,7 +122,7 @@ function Game() {
       <Show when={!loading()} fallback={<span class="loading loading-dots loading-lg"></span>}>
         <div class="w-96 px-4 py-4">
           {/* Header */}
-          <div class="flex justify-between items-center mb-4">
+          <div class="flex justify-between items-center">
             <div class=" flex flex-col">
               <div class="badge badge-secondary badge-outline text-xs">Tens</div>
               <h2 class="text-xl mt-2">{gameData.title} ({gameData.maxScore})</h2>
@@ -152,17 +152,26 @@ function Game() {
 
           {/* Stats */}
           <Show when={!editor() && gameData.players.length > 0}>
-            <div class="stats shadow mb-4 w-full">
+            <div class="stats shadow my-2 w-full">
               <div class="stat">
                 <div class="stat-title">Rounds Played</div>
                 <div class="stat-value">{gameData.countRounds()} </div>
                 <div class="stat-actions">
-                  <button class="btn btn-sm btn-primary" onClick={newRound}>
+                  <button class="btn btn-primary" onClick="new_round_modal.showModal()">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                       <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                     </svg>
-                    Round {gameData.countRounds() + 1}
-                  </button>
+                    Round {gameData.countRounds() + 1}</button>
+                  <dialog id="new_round_modal" class="modal">
+                    <div class="modal-box">
+                      <form method="dialog">
+                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                      </form>
+                      <h3 class="text-lg font-bold">Hello!</h3>
+                      <p class="py-4">Press ESC key or click on ✕ button to close</p>
+                      <button onClick={newRound}>New Round</button>
+                    </div>
+                  </dialog>
                 </div>
               </div>
               <Show when={gameData.countRounds() > 0}>
