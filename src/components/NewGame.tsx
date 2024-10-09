@@ -45,7 +45,7 @@ const NewGame = () => {
                                 <div class="flex flex-row items-center">
                                     <div class="ml-4">
                                         <button class="btn btn-circle btn-sm" onClick={addPlayer}>
-                                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
                                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
                                             </svg>
                                         </button>
@@ -53,7 +53,7 @@ const NewGame = () => {
                                     <Show when={players().length > 1}>
                                         <div class="px-2">
                                             <button class="btn btn-circle btn-sm" onClick={removePlayer}>
-                                                <svg class="w-2 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                                <svg class="w-2 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
                                                 </svg>
                                             </button>
