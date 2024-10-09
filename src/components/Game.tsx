@@ -168,7 +168,7 @@ function Game() {
                           <div class="grid grid-cols-2 space-x-4 space-y-2 items-center w-3/4">
                             <label class="text-xl text-right">{player().name}</label>
                             <input
-                              type="text"
+                              type="number"
                               placeholder="0"
                               id={"new-round-" + player().name}
                               name={"new-round-" + player().name}
