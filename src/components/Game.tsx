@@ -250,7 +250,32 @@ function Game() {
 
           {/* Round Details */}
           <Show when={gameData.countRounds() > 0}>
-            <h3 class="mt-4">Rounds</h3>
+            <div class="flex flex-row justify-between">
+              <h3 class="mt-4">Rounds</h3>
+              <div class="dropdown dropdown-top dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-square">
+                  <svg
+                    class="w-6 h-6"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-width="2"
+                      d="M12 6h.01M12 12h.01M12 18h.01"
+                    />
+                  </svg>
+                </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                  <li><a onClick={undoRound}>Delete Round {gameData.countRounds()}</a></li>
+                </ul>
+              </div>
+            </div>
             <div class="overflow-x-auto justify-left">
               <table class="table-zebra table-xs">
                 <thead>
@@ -291,14 +316,6 @@ function Game() {
                   </For>
                 </tbody>
               </table>
-            </div>
-            <div class="mt-4">
-              <button class="btn btn-sm btn-primary" onClick={undoRound}>
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                </svg>
-                Round {gameData.countRounds()}
-              </button>
             </div>
           </Show>
         </div>
