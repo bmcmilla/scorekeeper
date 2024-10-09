@@ -13,10 +13,10 @@ const Navbar = () => {
     return (
         <div class="navbar bg-base-100">
             <div class="navbar-start">
-                <A class="text-xl font-extralight mx-4" href="/">Scorekeeper</A>
+                <A class="text-xl font-extralight" href="/">Scorekeeper</A>
             </div>
             <div class="navbar-end">
-                <a class="btn btn-ghost btn-sm font-normal" onClick={handleSignOut}>Sign Out</a>
+                <a class="btn btn-ghost btn-sm" onClick={handleSignOut}>Sign Out</a>
             </div>
         </div>
     )
