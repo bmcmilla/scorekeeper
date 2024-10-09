@@ -17,6 +17,25 @@ export async function createGame(players: string[]): Promise<number> {
     return 0;
 }
 
+export async function createRound(gameId: number, roundNum: number, playerIndex: number, score: number): Promise<number> {
+
+    // FIXME bulk insert using Promise.all?
+
+    const { data, error } = await supabase.from('scores').insert({
+        game_id: gameId,
+        score: score,
+        player_index: playerIndex,
+        round_num: roundNum
+    }).select();
+
+    if (!error) {
+        return data[0].score_id;
+    }
+
+    console.error(error.message);
+    return 0;
+}
+
 export async function getGames(): Promise<GameMetadata[]> {
 
     const { data, error } = await supabase.from('games').select(`

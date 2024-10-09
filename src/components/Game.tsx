@@ -1,7 +1,7 @@
 import { createStore, produce } from 'solid-js/store';
 import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
 import { useParams } from "@solidjs/router";
-import { getGame } from '../api/GameClient';
+import { createRound, getGame } from '../api/GameClient';
 
 /** TODO
  * Error state (game not found)
@@ -77,13 +77,24 @@ function Game() {
     const round = gameData.players.map((player, index) => {
       return Number.parseInt(e.target[index].value) || 0;
     });
+
+
+    const ids = [];
+    round.forEach((round, index) => {
+      const id = createRound(gameData.id, gameData.countRounds() + 1, index, round);    
+      ids.push(id);
+    });
+    console.log(ids);
+    
+    // FIXME handle errors
+    
     setGameData(
       produce(game => {
         for (let i = 0; i < game.players.length; i++) {
           game.players[i].rounds.push(round[i]);
         }
       }
-      ));
+    ));
     document.getElementById('new_round_modal').close();
   };
 
