@@ -36,6 +36,20 @@ export async function createRound(gameId: number, roundNum: number, playerIndex:
     return 0;
 }
 
+export async function deleteRound(gameId: number, roundNum: number): Promise<boolean> {
+
+    const { error } = await supabase.from('scores').delete()
+        .eq('game_id', gameId)
+        .eq('round_num', roundNum);
+
+    if (!error) {
+        return true;
+    }
+
+    console.error(error.message);
+    return false;
+}
+
 export async function getGames(): Promise<GameMetadata[]> {
 
     const { data, error } = await supabase.from('games').select(`

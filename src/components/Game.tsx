@@ -1,7 +1,7 @@
 import { createStore, produce } from 'solid-js/store';
 import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
 import { useParams } from "@solidjs/router";
-import { createRound, getGame } from '../api/GameClient';
+import { createRound, deleteRound, getGame } from '../api/GameClient';
 
 /** TODO
  * Error state (game not found)
@@ -63,6 +63,11 @@ function Game() {
   });
 
   const undoRound = () => {
+    
+    deleteRound(gameData.id, gameData.countRounds());
+
+    // FIXME handle error
+    
     setGameData(
       produce(game => {
         for (let i = 0; i < game.players.length; i++) {
