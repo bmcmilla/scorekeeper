@@ -63,11 +63,11 @@ function Game() {
   });
 
   const undoRound = () => {
-    
+
     deleteRound(gameData.id, gameData.countRounds());
 
     // FIXME handle error
-    
+
     setGameData(
       produce(game => {
         for (let i = 0; i < game.players.length; i++) {
@@ -86,21 +86,22 @@ function Game() {
 
     const ids = [];
     round.forEach((round, index) => {
-      const id = createRound(gameData.id, gameData.countRounds() + 1, index, round);    
+      const id = createRound(gameData.id, gameData.countRounds() + 1, index, round);
       ids.push(id);
     });
     console.log(ids);
-    
+
     // FIXME handle errors
-    
+
     setGameData(
       produce(game => {
         for (let i = 0; i < game.players.length; i++) {
           game.players[i].rounds.push(round[i]);
         }
       }
-    ));
+      ));
     document.getElementById('new_round_modal').close();
+    e.target.reset();
   };
 
   // Memo to reverse rounds reactively
