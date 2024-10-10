@@ -171,14 +171,14 @@ function Game() {
                       <form onSubmit={onSubmit}>
                         <h3 class="text-lg font-bold mb-2">Round {gameData.countRounds() + 1}</h3>
                         <Index each={gameData.players}>{(player) => (
-                          <div class="grid grid-cols-2 space-x-4 space-y-2 items-center w-3/4">
-                            <label class="text-xl text-right">{player().name}</label>
+                          <div class="flex flex-col-2 space-x-4 space-y-2 items-center">
+                            <label class="text-md">{player().name}</label>
                             <input
                               type="number"
                               placeholder="0"
                               id={"new-round-" + player().name}
                               name={"new-round-" + player().name}
-                              class="input input-bordered input-lg text-xl text-center" />
+                              class="input input-bordered input-md text-xl" />
                           </div>
                         )}
                         </Index>
