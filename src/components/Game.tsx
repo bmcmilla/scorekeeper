@@ -275,16 +275,7 @@ function Game() {
                             </td>
                           )}
                         </For>
-                        <Show when={reversedRounds().length < 10}>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td></td>                                                                       
-                        </Show>
+                        <td class="w-full"></td>
                       </tr>
                     )}
                   </For>
