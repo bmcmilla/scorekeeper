@@ -78,7 +78,7 @@ const NewGame = () => {
                 )}
             </Index>
             <div class="my-4">
-                <button class="btn btn-primary" onClick={onSubmit}>Start</button>
+                <button class="btn btn-primary" onClick={onSubmit}>Start Game</button>
             </div>
         </div>
     )
