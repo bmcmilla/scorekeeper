@@ -119,7 +119,7 @@ function Game() {
 
   return (
     <div class="flex items-center justify-center">
-      <Show when={!loading()} fallback={<span class="loading loading-dots loading-lg"></span>}>
+      <Show when={!loading()} fallback={<div class="loading loading-dots loading-lg h-dvh"></div>}>
         <div class="w-96 px-4 mb-8">
           {/* Header */}
           <div class="flex justify-between items-center">
