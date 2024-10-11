@@ -165,26 +165,26 @@ function Game() {
                   </button>
                   <dialog id="new_round_modal" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
-                      <form method="dialog">
-                        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                      </form>
                       <form onSubmit={onSubmit}>
                         <h3 class="text-lg font-bold mb-2">Round {gameData.countRounds() + 1}</h3>
                         <Index each={gameData.players}>{(player) => (
-                          <div class="flex flex-col-2 space-x-4 space-y-2 items-center">
-                            <label class="text-md">{player().name}</label>
+                          <div class="grid grid-cols-2 items-center">
+                            <label class="text-lg py-4">{player().name}</label>
                             <input
                               type="number"
                               placeholder="0"
                               id={"new-round-" + player().name}
                               name={"new-round-" + player().name}
-                              class="input input-bordered input-md text-xl" />
+                              class="input input-bordered justify-center" />
                           </div>
                         )}
                         </Index>
                         <button class="btn btn-primary mt-4" type="submit">Add Round</button>
                       </form>
                     </div>
+                    <form method="dialog" class="modal-backdrop">
+                      <button>Cancel</button>
+                    </form>
                   </dialog>
                 </div>
               </div>
