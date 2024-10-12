@@ -41,7 +41,7 @@ function Game() {
     players: [],
     createdAt: new Date(),
 
-    total(playerName) {
+    total(playerName): number {
       if (this.players.length === 0) return 0;
       const player = this.players.find((p) => p.name === playerName);
       if (!player) return 0;
@@ -63,6 +63,19 @@ function Game() {
 
     countRounds() {
       return this.players.length > 0 ? this.players[0].rounds.length : 0;
+    },
+
+    currentLoser(): { name: string, score: number } {
+      let loser;
+      this.players.forEach(player => {
+        const total = this.total(player.name);
+        if (!loser || total > loser.score) {
+          loser = {
+            name: player.name, score: total
+          }
+        }
+      });
+      return loser;
     }
   });
 
@@ -211,37 +224,11 @@ function Game() {
             <div class="stats shadow my-2 w-full">
               <div class="stat">
                 <div class="stat-title">Rounds Played</div>
-                <div class="stat-value">{gameData.countRounds()} </div>
-                <div class="stat-actions">
-                  <button class="btn btn-primary btn-sm" onClick="new_round_modal.showModal()">
-                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
-                    </svg>
-                    Round {gameData.countRounds() + 1}
-                  </button>
-                  <dialog id="new_round_modal" class="modal modal-bottom sm:modal-middle">
-                    <div class="modal-box">
-                      <form method="dialog" class="modal-backdrop">
-                        <button>Cancel</button>
-                      </form>
-                      <form onSubmit={onSubmit}>
-                        <h3 class="text-lg font-bold mb-2">Round {gameData.countRounds() + 1}</h3>
-                        <Index each={gameData.players}>{(player) => (
-                          <div class="grid grid-cols-2 items-center">
-                            <label class="text-lg py-4">{player().name}</label>
-                            <input
-                              type="number"
-                              placeholder="0"
-                              id={"new-round-" + player().name}
-                              name={"new-round-" + player().name}
-                              class="input input-bordered justify-center" />
-                          </div>
-                        )}
-                        </Index>
-                        <button class="btn btn-primary mt-4" type="submit">Add Round</button>
-                      </form>
-                    </div>
-                  </dialog>
+                <div class="stat-value">{gameData.countRounds()} <button class="btn btn-square btn-sm btn-primary" onClick="new_round_modal.showModal()">
+                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                  </svg>
+                </button>
                 </div>
               </div>
               <Show when={gameData.countRounds() > 0}>
@@ -256,6 +243,30 @@ function Game() {
               </Show>
             </div>
           </Show>
+
+          <dialog id="new_round_modal" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box">
+              <form onSubmit={onSubmit}>
+                <h3 class="text-lg font-bold">Round {gameData.countRounds() + 1}</h3>
+                <Index each={gameData.players}>{(player) => (
+                  <div class="grid grid-cols-2 items-center mt-4">
+                    <label class="text-lg">{player().name}</label>
+                    <input
+                      type="number"
+                      placeholder="0"
+                      id={"new-round-" + player().name}
+                      name={"new-round-" + player().name}
+                      class="input input-bordered" />
+                  </div>
+                )}
+                </Index>
+                <button class="btn btn-primary mt-4" type="submit">Add Round</button>
+              </form>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+              <button>close</button>
+            </form>
+          </dialog>
 
           {/* Leaders */}
           <h3 class="py-2">Leaders</h3>
