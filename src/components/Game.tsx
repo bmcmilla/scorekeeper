@@ -1,7 +1,7 @@
 import { createStore, produce } from 'solid-js/store';
 import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
-import { useParams } from "@solidjs/router";
-import { createRound, deleteRound, getGame } from '../api/GameClient';
+import { useNavigate, useParams } from "@solidjs/router";
+import { createRound, deleteGame, deleteRound, getGame, updateGame } from '../api/GameClient';
 
 /** TODO
  * Error state (game not found)
@@ -9,11 +9,14 @@ import { createRound, deleteRound, getGame } from '../api/GameClient';
  * Title / maxScore editor
  * Unit testable data/stats functions
  * Check valid new round scores
+ * Confirmation dialogs
 */
 
 function Game() {
 
   const params = useParams();
+
+  const navigate = useNavigate();
 
   onMount(async () => {
     const game = await getGame(Number.parseInt(params.id));
@@ -77,6 +80,13 @@ function Game() {
       ));
   }
 
+  const handleDelete = async () => {
+    const success = deleteGame(gameData.id);
+    if (success) {
+      navigate("/");
+    }
+  }
+
   const onSubmit = (e) => {
     e.preventDefault();
     const round = gameData.players.map((player, index) => {
@@ -89,9 +99,8 @@ function Game() {
       const id = createRound(gameData.id, gameData.countRounds() + 1, index, round);
       ids.push(id);
     });
-    console.log(ids);
 
-    // FIXME handle errors
+    // FIXME assumes success, need to handle DB errors
 
     setGameData(
       produce(game => {
@@ -101,8 +110,25 @@ function Game() {
       }
       ));
     document.getElementById('new_round_modal').close();
-    e.target.reset();
   };
+
+  const handleGameSettings = (e) => {
+    e.preventDefault();
+    const title = e.target["new-title"].value || "";
+    const endScore = Number.parseInt(e.target["new-max-score"].value);
+    const valid = gameData.players.every(player => {
+      return gameData.total(player.name) <= endScore;
+    }) && title.length > 0;
+    if (valid) {
+      updateGame(gameData.id, title, endScore);
+      // FIXME assumes success, need to handle DB errors
+      setGameData('maxScore', endScore);
+      setGameData('title', title);
+    }
+    // FIXME modify CSS class per daisy docs
+    document.getElementById('title_modal').close();
+  }
+
 
   // Memo to reverse rounds reactively
   const reversedRounds = createMemo(() => {
@@ -118,8 +144,8 @@ function Game() {
   });
 
   return (
-    <div class="flex items-center justify-center">
-      <Show when={!loading()} fallback={<div class="loading loading-dots loading-lg h-dvh"></div>}>
+    <div class="flex justify-center">
+      <Show when={!loading()} fallback={<div class="loading loading-dots loading-lg"></div>}>
         <div class="w-96 px-4 mb-8">
           {/* Header */}
           <div class="flex justify-between items-center">
@@ -129,7 +155,7 @@ function Game() {
               <div class="text-sm text-neutral-500">{gameData.createdAt.toDateString()}</div>
             </div>
             <div>
-              <button class="btn btn-square btn-ghost">
+              <button class="btn btn-square btn-ghost" onclick="title_modal.showModal()">
                 <svg
                   class="w-6 h-6"
                   aria-hidden="true"
@@ -148,6 +174,35 @@ function Game() {
                 </svg>
               </button>
             </div>
+            <dialog id="title_modal" class="modal modal-bottom sm:modal-middle">
+              <div class="modal-box">
+                <h3 class="text-lg font-bold">Game Settings</h3>
+                <form onSubmit={handleGameSettings}>
+                  <div class="flex flex-col pb-4">
+                    <label class="text-lg py-4">Description</label>
+                    <input
+                      value={gameData.title}
+                      id="new-title"
+                      name="new-title"
+                      class="input input-bordered" />
+                    <label class="text-lg py-4">End Score</label>
+                    <input
+                      type="number"
+                      value={gameData.maxScore}
+                      id="new-max-score"
+                      name="new-max-score"
+                      class="input input-bordered w-1/4" />
+                  </div>
+                  <div class="flex flex-row justify-between">
+                    <button class="btn btn-primary" type="submit">Save</button>
+                    <button class="btn btn-error" onClick={handleDelete}>Delete Game</button>
+                  </div>
+                </form>
+              </div>
+              <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
           </div>
 
           {/* Stats */}
@@ -165,6 +220,9 @@ function Game() {
                   </button>
                   <dialog id="new_round_modal" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
+                      <form method="dialog" class="modal-backdrop">
+                        <button>Cancel</button>
+                      </form>
                       <form onSubmit={onSubmit}>
                         <h3 class="text-lg font-bold mb-2">Round {gameData.countRounds() + 1}</h3>
                         <Index each={gameData.players}>{(player) => (
@@ -182,9 +240,6 @@ function Game() {
                         <button class="btn btn-primary mt-4" type="submit">Add Round</button>
                       </form>
                     </div>
-                    <form method="dialog" class="modal-backdrop">
-                      <button>Cancel</button>
-                    </form>
                   </dialog>
                 </div>
               </div>

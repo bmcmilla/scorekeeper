@@ -17,6 +17,33 @@ export async function createGame(players: string[]): Promise<number> {
     return 0;
 }
 
+export async function deleteGame(id: number): Promise<boolean> {
+
+    const { error } = await supabase.from('games').delete().eq('game_id', id);
+
+    if (!error) {
+        return true;
+    }
+
+    console.error(error.message);
+    return false;
+}
+
+export async function updateGame(id: number, title: string, maxScore: number): Promise<boolean> {
+
+    const { error } = await supabase.from('games').update({
+        title: title,
+        max_score: maxScore
+    }).eq('game_id', id);
+
+    if (!error) {
+        return true;
+    }
+
+    console.error(error.message);
+    return false;
+}
+
 export async function createRound(gameId: number, roundNum: number, playerIndex: number, score: number): Promise<number> {
 
     // FIXME bulk insert using Promise.all?
