@@ -48,12 +48,12 @@ const Dashboard = () => {
                     </div>
                 </dialog>
                 <div class="mt-8">
-                    <h3 class="text-lg font-bold">Saved Games</h3>
-                    <Show when={games().length > 0} fallback={<h2>No games available</h2>}>
-                        <div class="flex flex-col">
+                    <h3 class="text-lg font-bold pb-4">Previous Games</h3>
+                    <Show when={games().length > 0} fallback={<h2>No games available.</h2>}>
+                        <div class="flex flex-col space-y-4">
                             <For each={games().toReversed()}>
                                 {(game) => (
-                                    <div class="pt-2">
+                                    <div class="flex flex-col">
                                         <div><a class="link" href={`/game/${game.id}`}>{game.title}</a></div>
                                         <div class="text-sm">{game.createdAt.toDateString()}</div>
                                     </div>
