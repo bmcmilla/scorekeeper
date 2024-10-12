@@ -158,7 +158,7 @@ function Game() {
   });
 
   return (
-    <div class="flex justify-center">
+    <div class="flex justify-center min-h-screen">
       <Show when={!loading()} fallback={<LoadingIndicator />}>
         <div class="w-96 px-4 mb-8">
           {/* Header */}
@@ -334,7 +334,7 @@ function Game() {
                                 <span class="text-xl">{player.name.charAt(0)}</span>
                               </div>
                             </div>
-                            <div class="text-xs">{player.name}</div>
+                            <div class="text-xs mt-1">{player.name}</div>
                           </div>
                         </td>
                         <For each={reversedRounds()}>
