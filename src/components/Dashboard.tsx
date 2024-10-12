@@ -5,6 +5,7 @@ import { User } from "@supabase/supabase-js";
 import { getGames } from "../api/GameClient";
 import { GameMetadata } from "../api/Model";
 import NewGame from "./NewGame";
+import LoadingIndicator from "./LoadingIndicator";
 
 const Dashboard = () => {
 
@@ -37,7 +38,7 @@ const Dashboard = () => {
 
     return (
         <div class="flex flex-col justify-center items-center m-8">
-            <Show when={!loading()} fallback={<div class="loading loading-dots loading-lg h-dvh"></div>}>
+            <Show when={!loading()} fallback={<LoadingIndicator/>}>
                 <h4>Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h4>
                 <div class="text-sm link-primary"><a onClick={handleSignOut}>Sign out</a></div>
                 <button class="btn btn-primary mt-6" onClick="new_game_modal.showModal()">New Game</button>

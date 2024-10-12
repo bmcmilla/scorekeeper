@@ -2,6 +2,7 @@ import { createStore, produce } from 'solid-js/store';
 import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
 import { useNavigate, useParams } from "@solidjs/router";
 import { createRound, deleteGame, deleteRound, getGame, updateGame } from '../api/GameClient';
+import LoadingIndicator from './LoadingIndicator';
 
 /** TODO
  * Error state (game not found)
@@ -145,7 +146,7 @@ function Game() {
 
   return (
     <div class="flex justify-center">
-      <Show when={!loading()} fallback={<div class="loading loading-dots loading-lg"></div>}>
+      <Show when={!loading()} fallback={<LoadingIndicator />}>
         <div class="w-96 px-4 mb-8">
           {/* Header */}
           <div class="flex justify-between items-center">
