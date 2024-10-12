@@ -30,11 +30,17 @@ const Dashboard = () => {
         setLoading(false);
     });
 
+    const handleSignOut = () => {
+        supabase.auth.signOut();
+        navigate("/login");
+    }    
+
     return (
         <div class="flex flex-col justify-center items-center m-8">
             <Show when={!loading()} fallback={<div class="loading loading-dots loading-lg h-dvh"></div>}>
-                <h4 class="mb-6">Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h4>
-                <button class="btn btn-primary" onClick="new_game_modal.showModal()">New Game</button>
+                <h4>Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h4>
+                <div class="text-sm link-primary"><a onClick={handleSignOut}>Sign out</a></div>
+                <button class="btn btn-primary mt-6" onClick="new_game_modal.showModal()">New Game</button>
                 <dialog id="new_game_modal" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
                         <NewGame />
