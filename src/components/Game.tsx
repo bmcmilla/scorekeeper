@@ -190,6 +190,9 @@ function Game() {
             </div>
             <dialog id="title_modal" class="modal modal-bottom sm:modal-middle">
               <div class="modal-box">
+                <form method="dialog">
+                  <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                </form>
                 <h3 class="text-lg font-bold">Game Settings</h3>
                 <form onSubmit={handleGameSettings}>
                   <div class="flex flex-col pb-4">
@@ -213,9 +216,6 @@ function Game() {
                   </div>
                 </form>
               </div>
-              <form method="dialog" class="modal-backdrop">
-                <button>close</button>
-              </form>
             </dialog>
           </div>
 
@@ -248,6 +248,9 @@ function Game() {
 
           <dialog id="new_round_modal" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box">
+              <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              </form>
               <form onSubmit={onSubmit}>
                 <h3 class="text-lg font-bold">Round {gameData.countRounds() + 1}</h3>
                 <Index each={gameData.players}>{(player) => (
@@ -265,9 +268,6 @@ function Game() {
                 <button class="btn btn-primary mt-4" type="submit">Add Round</button>
               </form>
             </div>
-            <form method="dialog" class="modal-backdrop">
-              <button>close</button>
-            </form>
           </dialog>
 
           {/* Leaders */}
