@@ -193,13 +193,13 @@ function Game() {
                 <h3 class="text-lg font-bold">Game Settings</h3>
                 <form onSubmit={handleGameSettings}>
                   <div class="flex flex-col pb-4">
-                    <label class="text-lg py-4">Description</label>
+                    <label class="text-lg mt-4 pb-2">Description</label>
                     <input
                       value={gameData.title}
                       id="new-title"
                       name="new-title"
                       class="input input-bordered" />
-                    <label class="text-lg py-4">End Score</label>
+                    <label class="text-lg mt-8 pb-2">End Score</label>
                     <input
                       type="number"
                       value={gameData.maxScore}
@@ -207,7 +207,7 @@ function Game() {
                       name="new-max-score"
                       class="input input-bordered w-1/4" />
                   </div>
-                  <div class="flex flex-row justify-between">
+                  <div class="flex flex-row justify-between mt-4">
                     <button class="btn btn-primary" type="submit">Save</button>
                     <button class="btn btn-error" onClick={handleDelete}>Delete Game</button>
                   </div>
@@ -224,11 +224,13 @@ function Game() {
             <div class="stats shadow my-2 w-full">
               <div class="stat">
                 <div class="stat-title">Rounds Played</div>
-                <div class="stat-value">{gameData.countRounds()} <button class="btn btn-square btn-sm btn-primary" onClick="new_round_modal.showModal()">
-                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
-                  </svg>
-                </button>
+                <div class="stat-value">{gameData.countRounds()}
+                  <span class="px-2" />
+                  <button class="btn btn-square btn-sm btn-primary" onClick="new_round_modal.showModal()">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                    </svg>
+                  </button>
                 </div>
               </div>
               <Show when={gameData.countRounds() > 0}>
