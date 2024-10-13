@@ -3,14 +3,14 @@ import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
 import { useNavigate, useParams } from "@solidjs/router";
 import { createRound, deleteGame, deleteRound, getGame, updateGame } from '../api/GameClient';
 import LoadingIndicator from './LoadingIndicator';
+import ConfirmationDialog from './ConfirmationDialog';
 
 /** TODO
  * Error state (game not found)
  * No auth state
- * Title / maxScore editor
  * Unit testable data/stats functions
  * Check valid new round scores
- * Confirmation dialogs
+ * Use context to separate components
 */
 
 function Game() {
@@ -212,7 +212,13 @@ function Game() {
                   </div>
                   <div class="flex flex-row justify-between mt-4">
                     <button class="btn btn-primary" type="submit">Save</button>
-                    <button class="btn btn-error" onClick={handleDelete}>Delete Game</button>
+                    <button class="btn" onclick="delete_game_modal.showModal()">
+                      <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                      </svg>
+                      Delete Game
+                    </button>
+                    <ConfirmationDialog modalId="delete_game_modal" message="Delete this game?" action="Delete" callback={handleDelete} />
                   </div>
                 </form>
               </div>
@@ -357,11 +363,12 @@ function Game() {
                         <Show when={roundIndex == reversedRounds().length - 1} fallback={<th></th>}>
                           <td>
                             <div class="tooltip" data-tip={"Delete Round " + (roundIndex + 1)}>
-                              <button class="btn btn-xs" onClick={undoRound}>
+                              <button class="btn btn-xs" onClick="delete_round_modal.showModal()">
                                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                 </svg>
                               </button>
+                              <ConfirmationDialog modalId="delete_round_modal" message={`Delete Round ${gameData.countRounds()}?`} action="Delete" callback={undoRound} />
                             </div>
                           </td>
                         </Show>
