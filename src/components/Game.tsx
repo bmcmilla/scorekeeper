@@ -26,13 +26,6 @@ function Game() {
     maxScore: 0,
     players: [],
     createdAt: new Date(),
-
-    total(playerName): number {
-      if (this.players.length === 0) return 0;
-      const player = this.players.find((p) => p.name === playerName);
-      if (!player) return 0;
-      return player.rounds.reduce((total, score) => total + score, 0);
-    },
   });
 
   onMount(async () => {
@@ -102,7 +95,7 @@ function Game() {
     const title = e.target["new-title"].value || "";
     const endScore = Number.parseInt(e.target["new-max-score"].value);
     const valid = gameData.players.every(player => {
-      return gameData.total(player.name) <= endScore;
+      return total(player.name) <= endScore;
     }) && title.length > 0;
     if (valid) {
       updateGame(gameData.id, title, endScore);
@@ -124,7 +117,7 @@ function Game() {
   // Memo to sort players by total score
   const leaders = createMemo(() => {
     return [...gameData.players].sort(
-      (a, b) => gameData.total(a.name) - gameData.total(b.name)
+      (a, b) => total(a.name) - total(b.name)
     )
   });
 
@@ -147,6 +140,12 @@ function Game() {
       round: loserPlayer.rounds.length,
     };
   });
+
+  const total = (playerName) => {
+    const player = gameData.players.find((p) => p.name === playerName);
+    if (!player) return 0;
+    return player.rounds.reduce((tot, score) => tot + score, 0);
+  };
 
   return (
     <div class="flex justify-center min-h-screen">
@@ -288,11 +287,11 @@ function Game() {
                       '--size': '4rem',
                       '--thickness': '6px',
                       '--value':
-                        (100 * gameData.total(player.name)) / gameData.maxScore,
+                        (100 * total(player.name)) / gameData.maxScore,
                     }}
                     role="progressbar">
                     <span class="text-xl font-extrabold">
-                      {gameData.total(player.name)}
+                      {total(player.name)}
                     </span>
                   </div>
                 </div>
