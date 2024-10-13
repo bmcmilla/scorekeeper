@@ -19,20 +19,6 @@ function Game() {
 
   const navigate = useNavigate();
 
-  onMount(async () => {
-    const game = await getGame(Number.parseInt(params.id));
-    setGameData(
-      produce(g => {
-        g.id = game.id;
-        g.title = game.title;
-        g.maxScore = game.maxScore;
-        g.players = game.players;
-        g.createdAt = game.createdAt;
-      })
-    );
-    setLoading(false);
-  });
-
   const [loading, setLoading] = createSignal(true);
   const [gameData, setGameData] = createStore({
     id: 0,
@@ -47,41 +33,25 @@ function Game() {
       if (!player) return 0;
       return player.rounds.reduce((total, score) => total + score, 0);
     },
-
-    biggestLoser() {
-      if (this.countRounds() === 0) return undefined;
-
-      const lastRound = this.players.map((p) => p.rounds[p.rounds.length - 1]);
-      const loserIndex = lastRound.indexOf(Math.max(...lastRound));
-      const loserPlayer = this.players[loserIndex];
-      return {
-        name: loserPlayer.name,
-        score: lastRound[loserIndex],
-        round: loserPlayer.rounds.length,
-      };
-    },
-
-    countRounds() {
-      return this.players.length > 0 ? this.players[0].rounds.length : 0;
-    },
-
-    currentLoser(): { name: string, score: number } {
-      let loser;
-      this.players.forEach(player => {
-        const total = this.total(player.name);
-        if (!loser || total > loser.score) {
-          loser = {
-            name: player.name, score: total
-          }
-        }
-      });
-      return loser;
-    }
   });
+
+  onMount(async () => {
+    const game = await getGame(Number.parseInt(params.id));
+    setGameData(
+      produce(g => {
+        g.id = game.id;
+        g.title = game.title;
+        g.maxScore = game.maxScore;
+        g.players = game.players;
+        g.createdAt = game.createdAt;
+      })
+    );
+    setLoading(false);
+  });  
 
   const undoRound = () => {
 
-    deleteRound(gameData.id, gameData.countRounds());
+    deleteRound(gameData.id, countRounds());
 
     // FIXME handle error
 
@@ -110,7 +80,7 @@ function Game() {
 
     const ids = [];
     round.forEach((round, index) => {
-      const id = createRound(gameData.id, gameData.countRounds() + 1, index, round);
+      const id = createRound(gameData.id, countRounds() + 1, index, round);
       ids.push(id);
     });
 
@@ -156,6 +126,26 @@ function Game() {
     return [...gameData.players].sort(
       (a, b) => gameData.total(a.name) - gameData.total(b.name)
     )
+  });
+
+  const countRounds = createMemo(() => {
+    // FIXME assumes equal length
+    return gameData.players.length > 0 ? gameData.players[0].rounds.length : 0;
+  });
+
+  // Memo to compute the biggest loser
+  const biggestLoser = createMemo(() => {
+    if (countRounds() === 0) return undefined;
+
+    const lastRound = gameData.players.map((player) => player.rounds[player.rounds.length - 1]);
+    // FIXME break a tie (for now it's the first player)
+    const loserIndex = lastRound.indexOf(Math.max(...lastRound));
+    const loserPlayer = gameData.players[loserIndex];
+    return {
+      name: loserPlayer.name,
+      score: lastRound[loserIndex],
+      round: loserPlayer.rounds.length,
+    };
   });
 
   return (
@@ -231,7 +221,7 @@ function Game() {
             <div class="stats shadow my-2 w-full">
               <div class="stat">
                 <div class="stat-title">Rounds Played</div>
-                <div class="stat-value">{gameData.countRounds()}
+                <div class="stat-value">{countRounds()}
                   <span class="px-2" />
                   <button class="btn btn-square btn-sm btn-primary" onClick="new_round_modal.showModal()">
                     <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -240,13 +230,13 @@ function Game() {
                   </button>
                 </div>
               </div>
-              <Show when={gameData.countRounds() > 0}>
+              <Show when={countRounds() > 0}>
                 <div class="stat">
                   <div class="stat-title">Biggest Loser</div>
-                  <div class="stat-value">{gameData.biggestLoser().name}</div>
+                  <div class="stat-value">{biggestLoser().name}</div>
                   <div class="stat-desc">
-                    {gameData.biggestLoser().score} points in Round{' '}
-                    {gameData.biggestLoser().round}
+                    {biggestLoser().score} points in Round{' '}
+                    {biggestLoser().round}
                   </div>
                 </div>
               </Show>
@@ -259,7 +249,7 @@ function Game() {
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>
               <form onSubmit={onSubmit}>
-                <h3 class="text-lg font-bold">Round {gameData.countRounds() + 1}</h3>
+                <h3 class="text-lg font-bold">Round {countRounds() + 1}</h3>
                 <Index each={gameData.players}>{(player) => (
                   <div class="grid grid-cols-2 items-center mt-4">
                     <label class="text-lg">{player().name}</label>
@@ -312,7 +302,7 @@ function Game() {
           </div>
 
           {/* Round Table */}
-          <Show when={gameData.countRounds() > 0}>
+          <Show when={countRounds() > 0}>
             <div class="flex flex-row justify-between mt-4">
               <h3>Rounds</h3>
             </div>
@@ -369,7 +359,7 @@ function Game() {
                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                 </svg>
                               </button>
-                              <ConfirmationDialog modalId="delete_round_modal" message={`Delete Round ${gameData.countRounds()}?`} action="Delete" callback={undoRound} />
+                              <ConfirmationDialog modalId="delete_round_modal" message={`Delete Round ${countRounds()}?`} action="Delete" callback={undoRound} />
                             </div>
                           </td>
                         </Show>
