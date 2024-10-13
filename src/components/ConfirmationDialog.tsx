@@ -9,7 +9,7 @@ export type ConfirmationDialogProps = {
 
 const ConfirmationDialog: Component<ConfirmationDialogProps> = (props) => {
   return (
-    <dialog id={props.modalId} class="modal">
+    <dialog id={props.modalId} class="modal modal-bottom sm:modal-middle">
       <div class="modal-box">
         <p class="text-lg text-left">{props.message}</p>
         <div class="modal-action">
