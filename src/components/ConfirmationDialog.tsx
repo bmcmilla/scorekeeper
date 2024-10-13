@@ -13,10 +13,10 @@ const ConfirmationDialog: Component<ConfirmationDialogProps> = (props) => {
       <div class="modal-box">
         <p class="text-lg text-left">{props.message}</p>
         <div class="modal-action">
-          <button class="btn btn-error" onClick={props.callback}>{props.action}</button>
           <form method="dialog">
             <button class="btn">Cancel</button>
           </form>
+          <button class="btn btn-error" onClick={props.callback}>{props.action}</button>
         </div>
       </div>
     </dialog>
