@@ -124,6 +124,7 @@ function Game() {
       }
       ));
     document.getElementById('new_round_modal').close();
+    e.target.reset();
   };
 
   const handleGameSettings = (e) => {
