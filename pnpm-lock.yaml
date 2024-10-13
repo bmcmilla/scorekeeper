@@ -14,6 +14,9 @@ dependencies:
   '@supabase/supabase-js':
     specifier: ^2.45.4
     version: 2.45.4
+  howler:
+    specifier: ^2.2.4
+    version: 2.2.4
   solid-js:
     specifier: ^1.9.1
     version: 1.9.1
@@ -1818,6 +1821,10 @@ packages:
     dependencies:
       function-bind: 1.1.2
     dev: true
+
+  /howler@2.2.4:
+    resolution: {integrity: sha512-iARIBPgcQrwtEr+tALF+rapJ8qSc+Set2GJQl7xT1MQzWaVkFebdJhR3alVlSiUf5U7nAANKuj3aWpwerocD5w==}
+    dev: false
 
   /html-encoding-sniffer@4.0.0:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
