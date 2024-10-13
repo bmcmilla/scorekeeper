@@ -39,7 +39,7 @@ const Dashboard = () => {
     return (
         <div class="flex flex-col justify-center items-center m-8">
             <Show when={!loading()} fallback={<LoadingIndicator/>}>
-                <h4>Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h4>
+                <h3>Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h3>
                 <div class="text-sm link-primary"><a onClick={handleSignOut}>Sign out</a></div>
                 <button class="btn btn-primary mt-6" onClick="new_game_modal.showModal()">New Game</button>
                 <dialog id="new_game_modal" class="modal modal-bottom sm:modal-middle">
@@ -48,7 +48,7 @@ const Dashboard = () => {
                     </div>
                 </dialog>
                 <div class="mt-8">
-                    <h3 class="text-lg font-bold pb-4">Previous Games</h3>
+                    <h3 class="font-bold pb-4">Previous Games</h3>
                     <Show when={games().length > 0} fallback={<h2>No games available.</h2>}>
                         <div class="flex flex-col space-y-4">
                             <For each={games().toReversed()}>
