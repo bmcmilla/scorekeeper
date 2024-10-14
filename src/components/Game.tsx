@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "@solidjs/router";
 import { createRound, deleteGame, deleteRound, getGame, updateGame } from '../api/GameClient';
 import LoadingIndicator from './LoadingIndicator';
 import ConfirmationDialog from './ConfirmationDialog';
+import { AudioPlayer } from '../Audio';
 
 /** TODO
  * Error state (game not found)
@@ -18,6 +19,8 @@ function Game() {
   const params = useParams();
 
   const navigate = useNavigate();
+
+  const audio = new AudioPlayer();
 
   const [loading, setLoading] = createSignal(true);
   const [gameData, setGameData] = createStore({
@@ -40,7 +43,7 @@ function Game() {
       })
     );
     setLoading(false);
-  });  
+  });
 
   const undoRound = () => {
 
@@ -64,12 +67,12 @@ function Game() {
     }
   }
 
-  const onSubmit = (e) => {
+  const handleNewRound = (e) => {
     e.preventDefault();
+
     const round = gameData.players.map((player, index) => {
       return Number.parseInt(e.target[index].value) || 0;
     });
-
 
     const ids = [];
     round.forEach((round, index) => {
@@ -79,6 +82,7 @@ function Game() {
 
     // FIXME assumes success, need to handle DB errors
 
+    const before = totals();
     setGameData(
       produce(game => {
         for (let i = 0; i < game.players.length; i++) {
@@ -86,6 +90,9 @@ function Game() {
         }
       }
       ));
+    playAudio(before, totals());
+    
+    // FIXME modify CSS class per daisy docs
     document.getElementById('new_round_modal').close();
     e.target.reset();
   };
@@ -141,11 +148,25 @@ function Game() {
     };
   });
 
-  const total = (playerName) => {
+  const total = (playerName): number => {
     const player = gameData.players.find((p) => p.name === playerName);
     if (!player) return 0;
     return player.rounds.reduce((tot, score) => tot + score, 0);
   };
+
+  const totals = (): number[] => {
+    return gameData.players.map(p => total(p.name));
+  }
+
+  // ring bell if any total crossed the next multiple of 100
+  const playAudio = (before: number[], after: number[]) => {
+    const threshold = Math.min(Math.floor(Math.max(...before) / 100) * 100 + 100, gameData.maxScore);
+    const crossed = after.some(total => total >= threshold);
+    console.log(`Checking audio before=${before} threshold=${threshold} crossed=${crossed}`);
+    if (crossed) {
+        audio.play();
+    }
+}
 
   return (
     <div class="flex justify-center min-h-screen">
@@ -247,7 +268,7 @@ function Game() {
               <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>
-              <form onSubmit={onSubmit}>
+              <form onSubmit={handleNewRound}>
                 <h3 class="text-lg font-bold">Round {countRounds() + 1}</h3>
                 <Index each={gameData.players}>{(player) => (
                   <div class="grid grid-cols-2 items-center mt-4">
