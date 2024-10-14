@@ -164,9 +164,9 @@ function Game() {
     const crossed = after.some(total => total >= threshold);
     console.log(`Checking audio before=${before} threshold=${threshold} crossed=${crossed}`);
     if (crossed) {
-        audio.play();
+      audio.play();
     }
-}
+  }
 
   return (
     <div class="flex justify-center min-h-screen">
@@ -306,7 +306,7 @@ function Game() {
                     class="radial-progress bg-transparent border-base-600 border-0"
                     style={{
                       '--size': '4rem',
-                      '--thickness': '6px',
+                      '--thickness': total(player.name) > 0 ? '5px' : '0px',
                       '--value':
                         (100 * total(player.name)) / gameData.maxScore,
                     }}
