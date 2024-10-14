@@ -101,9 +101,8 @@ function Game() {
     e.preventDefault();
     const title = e.target["new-title"].value || "";
     const endScore = Number.parseInt(e.target["new-max-score"].value);
-    const valid = gameData.players.every(player => {
-      return total(player.name) <= endScore;
-    }) && title.length > 0;
+    const valid = title.length > 0;
+    // FIXME more complete validation
     if (valid) {
       updateGame(gameData.id, title, endScore);
       // FIXME assumes success, need to handle DB errors
