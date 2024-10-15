@@ -5,6 +5,7 @@ import { createRound, deleteGame, deleteRound, getGame, updateGame } from '../ap
 import LoadingIndicator from './LoadingIndicator';
 import ConfirmationDialog from './ConfirmationDialog';
 import { AudioPlayer } from '../Audio';
+import RadialProgress from './RadialProgress';
 
 /** TODO
  * Error state (game not found)
@@ -301,19 +302,7 @@ function Game() {
                     </div>
                   </div>
                   <span class="flex-1 text-left text-md px-2">{player.name}</span>
-                  <div
-                    class="radial-progress bg-transparent border-base-600 border-0"
-                    style={{
-                      '--size': '4rem',
-                      '--thickness': total(player.name) > 0 ? '5px' : '0px',
-                      '--value':
-                        (100 * total(player.name)) / gameData.maxScore,
-                    }}
-                    role="progressbar">
-                    <span class="text-xl font-extrabold">
-                      {total(player.name)}
-                    </span>
-                  </div>
+                  <RadialProgress score={total(player.name)} endScore={gameData.maxScore} />
                 </div>
               </div>
             )}
