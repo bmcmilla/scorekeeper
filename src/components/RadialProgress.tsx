@@ -33,7 +33,7 @@ const RadialProgress: Component<{ score: number, endScore: number }> = (props) =
                 '--dynamic-color': interpolateColor(100 * props.score / props.endScore)
             }}
             role="progressbar">
-            <span class="text-xl font-extrabold text-neutral">
+            <span class="text-xl font-extrabold text-neutral-content">
                 {props.score}
             </span>
         </div>
