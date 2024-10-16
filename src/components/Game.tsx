@@ -23,11 +23,19 @@ function Game() {
 
   const audio = new AudioPlayer();
 
+  type GameStore = {
+    id: number,
+    title: string,
+    endScore: number,
+    players: { name: string, rounds: number[] }[],
+    createdAt: Date
+  }
+
   const [loading, setLoading] = createSignal(true);
-  const [gameData, setGameData] = createStore({
+  const [gameData, setGameData] = createStore<GameStore>({
     id: 0,
     title: '',
-    maxScore: 0,
+    endScore: 0,
     players: [],
     createdAt: new Date(),
   });
@@ -38,7 +46,7 @@ function Game() {
       produce(g => {
         g.id = game.id;
         g.title = game.title;
-        g.maxScore = game.maxScore;
+        g.endScore = game.maxScore;
         g.players = game.players;
         g.createdAt = game.createdAt;
       })
@@ -92,7 +100,7 @@ function Game() {
       }
       ));
     playAudio(before, totals());
-    
+
     // FIXME modify CSS class per daisy docs
     document.getElementById('new_round_modal').close();
     e.target.reset();
@@ -137,7 +145,7 @@ function Game() {
   const biggestLoser = createMemo(() => {
     if (countRounds() === 0) return undefined;
 
-    const lastRound = gameData.players.map((player) => player.rounds[player.rounds.length - 1]);
+    const lastRound: number[] = gameData.players.map((player) => player.rounds[player.rounds.length - 1]);
     // FIXME break a tie (for now it's the first player)
     const loserIndex = lastRound.indexOf(Math.max(...lastRound));
     const loserPlayer = gameData.players[loserIndex];
@@ -160,7 +168,7 @@ function Game() {
 
   // ring bell if any total crossed the next multiple of 100
   const playAudio = (before: number[], after: number[]) => {
-    const threshold = Math.min(Math.floor(Math.max(...before) / 100) * 100 + 100, gameData.maxScore);
+    const threshold = Math.min(Math.floor(Math.max(...before) / 100) * 100 + 100, gameData.endScore);
     const crossed = after.some(total => total >= threshold);
     console.log(`Checking audio before=${before} threshold=${threshold} crossed=${crossed}`);
     if (crossed) {
@@ -216,7 +224,7 @@ function Game() {
                     <label class="text-lg mt-8 pb-2">End Score</label>
                     <input
                       type="number"
-                      value={gameData.maxScore}
+                      value={gameData.endScore}
                       id="new-max-score"
                       name="new-max-score"
                       class="input input-bordered w-1/4" />
@@ -302,7 +310,7 @@ function Game() {
                     </div>
                   </div>
                   <span class="flex-1 text-left text-md px-2">{player.name}</span>
-                  <RadialProgress score={total(player.name)} endScore={gameData.maxScore} />
+                  <RadialProgress score={total(player.name)} endScore={gameData.endScore} />
                 </div>
               </div>
             )}
