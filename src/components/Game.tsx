@@ -1,21 +1,21 @@
 import { createStore, produce } from 'solid-js/store';
-import { createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
+import { Component, createMemo, createSignal, For, Index, onMount, Show } from 'solid-js';
 import { useNavigate, useParams } from "@solidjs/router";
 import { createRound, deleteGame, deleteRound, getGame, updateGame } from '../api/GameClient';
 import LoadingIndicator from './LoadingIndicator';
 import ConfirmationDialog from './ConfirmationDialog';
 import { AudioPlayer } from '../Audio';
 import RadialProgress from './RadialProgress';
+import { supabase } from '../api/SupabaseClient';
 
 /** TODO
  * Error state (game not found)
- * No auth state
  * Unit testable data/stats functions
  * Check valid new round scores
- * Use context to separate components
+ * Use context to separate components / reuse auth user
 */
 
-function Game() {
+const Game: Component = () => {
 
   const params = useParams();
 
@@ -41,6 +41,11 @@ function Game() {
   });
 
   onMount(async () => {
+    const user = await supabase.auth.getUser();
+    if (user.error) {
+      navigate("/login");
+    }
+
     const game = await getGame(Number.parseInt(params.id));
     setGameData(
       produce(g => {

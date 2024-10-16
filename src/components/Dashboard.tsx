@@ -1,4 +1,4 @@
-import { createSignal, For, onMount, Show } from "solid-js";
+import { Component, createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
@@ -7,7 +7,13 @@ import { GameMetadata } from "../api/Model";
 import NewGame from "./NewGame";
 import LoadingIndicator from "./LoadingIndicator";
 
-const Dashboard = () => {
+/** TODO
+ * Error state (games not found)
+ * Check valid new game form
+ * Use context to reuse auth user
+*/
+
+const Dashboard: Component = () => {
 
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
