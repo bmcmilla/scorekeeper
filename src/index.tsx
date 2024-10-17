@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Game from "./components/Game";
 import App from './App';
+import SignIn from './components/SignIn';
 
 const root = document.getElementById('root');
 
@@ -16,5 +17,6 @@ render(() =>
     <Route path="/login" component={Login} />
     <Route path="/register" component={Register} />
     <Route path="/game/:id" component={Game} />
+    <Route path="/signin" component={SignIn} />    
   </Router>
   , root!);
