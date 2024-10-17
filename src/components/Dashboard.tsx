@@ -1,6 +1,6 @@
 import { Component, createSignal, For, onMount, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, useSearchParams } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
 import { getGames } from "../api/GameClient";
 import { GameMetadata } from "../api/Model";
@@ -21,12 +21,19 @@ const Dashboard: Component = () => {
 
     const navigate = useNavigate();
 
+    const [searchParams] = useSearchParams();
+
     onMount(async () => {
         const user = await supabase.auth.getUser();
         if (!user.error) {
             setUser(user.data.user);
         } else {
-            navigate("/login");
+            console.log(searchParams)
+            if (searchParams.google) {
+                navigate("/signin");
+            } else {
+                navigate("/login");
+            }
         }
 
         const games = await getGames();
