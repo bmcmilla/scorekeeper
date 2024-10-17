@@ -120,7 +120,7 @@ const Game: Component = () => {
     if (valid) {
       updateGame(gameData.id, title, endScore);
       // FIXME assumes success, need to handle DB errors
-      setGameData('maxScore', endScore);
+      setGameData('endScore', endScore);
       setGameData('title', title);
     }
     // FIXME modify CSS class per daisy docs
