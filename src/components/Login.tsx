@@ -1,8 +1,8 @@
-import { createSignal } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { A, useNavigate } from "@solidjs/router";
 import { supabase } from "../api/SupabaseClient";
 
-const Login = () => {
+const Login : Component = () => {
 
     const [email, setEmail] = createSignal('');
     const [password, setPassword] = createSignal('');
