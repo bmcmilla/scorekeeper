@@ -1,10 +1,16 @@
 import { Component } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
+import { useNavigate } from "@solidjs/router";
 
 const SignIn: Component = () => {
 
+    const navigate = useNavigate();
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async function handleCredentialResponse(response) {
+
+        console.log(response);
+
         const { data, error } = await supabase.auth.signInWithIdToken({
             provider: 'google',
             token: response.credential,
@@ -12,6 +18,7 @@ const SignIn: Component = () => {
 
         if (!error) {
             console.log(data);
+            navigate("/dashboard")
         }
 
         console.log(error);
