@@ -9,7 +9,7 @@ const SignIn: Component = () => {
     const [scriptLoaded, setScriptLoaded] = createSignal(false);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async function handleCredentialResponse(response) {
+    function handleCredentialResponse(response) {
 
         console.log(response);
 
@@ -47,7 +47,7 @@ const SignIn: Component = () => {
                 data-client_id="320191205718-uisumpne4juup798ts2c3lts18f0gngq.apps.googleusercontent.com"
                 data-context="signin"
                 data-ux_mode="popup"
-                data-callback="handleCredentialResponse"
+                data-callback={handleCredentialResponse}
                 data-itp_support="true">
             </div>
             <div class="g_id_signin"
@@ -58,7 +58,7 @@ const SignIn: Component = () => {
                 data-size="large"
                 data-logo_alignment="left">
             </div>
-            <Show when={scriptLoaded}>
+            <Show when={scriptLoaded()}>
                 <p>Script loaded!</p>
             </Show>
         </div>
