@@ -1,36 +1,47 @@
 import { Component, createSignal, onCleanup, onMount, Show } from "solid-js";
-// import { supabase } from "../api/SupabaseClient";
-// import { useNavigate } from "@solidjs/router";
+import { supabase } from "../api/SupabaseClient";
+import { useNavigate } from "@solidjs/router";
 
 const SignIn: Component = () => {
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [scriptLoaded, setScriptLoaded] = createSignal(false);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    function handleCredentialResponse(response) {
+    async function handleCredentialResponse(response) {
 
-        console.log(response);
+        const { data, error } = await supabase.auth.signInWithIdToken({
+            provider: 'google',
+            token: response.credential,
+        });
 
-        // const { data, error } = await supabase.auth.signInWithIdToken({
-        //     provider: 'google',
-        //     token: response.credential,
-        // });
-
-        // if (!error) {
-        //     console.log(data);
-        //     navigate("/dashboard")
-        // }
-
-        // console.log(error);
+        if (!error) {
+            console.log(data);
+            navigate("/dashboard")
+        } else {
+            console.log(error);
+        }
     }
 
     onMount(() => {
         const script = document.createElement("script") as HTMLScriptElement;
         script.src = "https://accounts.google.com/gsi/client"
+        script.referrerPolicy = "no-referrer-when-downgrade";
         script.async = true;
         script.onload = () => {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            window.google.accounts.id.initialize({
+                client_id: "320191205718-uisumpne4juup798ts2c3lts18f0gngq.apps.googleusercontent.com",
+                callback: (response) => {
+                    console.log("got callback!")
+                    handleCredentialResponse(response);
+                }
+            });
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            window.google.accounts.id.prompt();
             setScriptLoaded(true);
         }
         document.head.appendChild(script);
@@ -43,7 +54,7 @@ const SignIn: Component = () => {
 
     return (
         <div class="flex flex-col items-center m-8 h-dvh">
-            <div id="g_id_onload"
+            {/* <div id="g_id_onload"
                 data-client_id="320191205718-uisumpne4juup798ts2c3lts18f0gngq.apps.googleusercontent.com"
                 data-context="signin"
                 data-ux_mode="popup"
@@ -57,8 +68,8 @@ const SignIn: Component = () => {
                 data-text="signin_with"
                 data-size="large"
                 data-logo_alignment="left">
-            </div>
-            <Show when={scriptLoaded()}>
+            </div> */}
+                <Show when={scriptLoaded()}>
                 <p>Script loaded!</p>
             </Show>
         </div>
