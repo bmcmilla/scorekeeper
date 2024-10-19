@@ -12,8 +12,7 @@ import LoadingIndicator from "./LoadingIndicator";
  * Check valid new game form
  * Use context to reuse auth user
 */
-
-const Dashboard: Component = () => {
+const Dashboard: Component = () => { 
 
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
@@ -47,7 +46,7 @@ const Dashboard: Component = () => {
             <Show when={!loading()} fallback={<LoadingIndicator/>}>
                 <h3>Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h3>
                 <div class="link link-primary link-hover"><a onClick={handleSignOut}>Sign out</a></div>
-                <button class="btn btn-primary mt-6" onClick="new_game_modal.showModal()">New Game</button>
+                <button class="btn btn-primary mt-6" onClick={() => (document.getElementById("new_game_modal") as HTMLFormElement).showModal()}>New Game</button>
                 <dialog id="new_game_modal" class="modal modal-bottom sm:modal-middle">
                     <div class="modal-box">
                         <NewGame />
