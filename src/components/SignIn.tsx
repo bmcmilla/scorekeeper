@@ -1,28 +1,45 @@
-import { Component } from "solid-js";
-import { supabase } from "../api/SupabaseClient";
-import { useNavigate } from "@solidjs/router";
+import { Component, createSignal, onCleanup, onMount, Show } from "solid-js";
+// import { supabase } from "../api/SupabaseClient";
+// import { useNavigate } from "@solidjs/router";
 
 const SignIn: Component = () => {
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
+
+    const [scriptLoaded, setScriptLoaded] = createSignal(false);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async function handleCredentialResponse(response) {
 
         console.log(response);
 
-        const { data, error } = await supabase.auth.signInWithIdToken({
-            provider: 'google',
-            token: response.credential,
-        });
+        // const { data, error } = await supabase.auth.signInWithIdToken({
+        //     provider: 'google',
+        //     token: response.credential,
+        // });
 
-        if (!error) {
-            console.log(data);
-            navigate("/dashboard")
-        }
+        // if (!error) {
+        //     console.log(data);
+        //     navigate("/dashboard")
+        // }
 
-        console.log(error);
+        // console.log(error);
     }
+
+    onMount(() => {
+        const script = document.createElement("script") as HTMLScriptElement;
+        script.src = "https://accounts.google.com/gsi/client"
+        script.async = true;
+        script.onload = () => {
+            setScriptLoaded(true);
+        }
+        document.head.appendChild(script);
+    });
+
+    onCleanup(() => {
+        console.log("Cleaned up");
+        // unload script?
+    });
 
     return (
         <div class="flex flex-col items-center m-8 h-dvh">
@@ -41,6 +58,9 @@ const SignIn: Component = () => {
                 data-size="large"
                 data-logo_alignment="left">
             </div>
+            <Show when={scriptLoaded}>
+                <p>Script loaded!</p>
+            </Show>
         </div>
     )
 }
