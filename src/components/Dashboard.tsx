@@ -21,19 +21,21 @@ const Dashboard: Component = () => {
     const navigate = useNavigate();
 
     onMount(async () => {
-        const user = await supabase.auth.getUser();
-        if (!user.error) {
-            setUser(user.data.user);
-        } else {
-            navigate("/login");
+        try {
+            const user = await supabase.auth.getUser();
+            if (!user.error) {
+                setUser(user.data.user);
+            } else {
+                navigate("/login");
+            }
+            const games = await getGames();
+            if (games) {
+                setGames(games);
+            }
+            setLoading(false);
+        } catch(err) {
+            console.log(err);
         }
-
-        const games = await getGames();
-        if (games) {
-            setGames(games);
-        }
-
-        setLoading(false);
     });
 
     const handleSignOut = () => {
