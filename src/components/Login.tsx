@@ -56,14 +56,15 @@ const Login: Component = () => {
                         onClick={handleLogin}>
                         Sign In
                     </button>
-                    <SignIn />
+                    <div class="divider divider-horizontal">OR</div>
+                    <SignIn />                                            
                 </div>
                 <div>
                     <span class="text-xs">
                         Don't have an account? <A href="/register" class="text-blue-600 dark:text-blue-500 hover:underline">Sign up here</A>
                     </span>
-                </div>
-            </form>
+                </div>                
+            </form>    
         </div>
     )
 }
