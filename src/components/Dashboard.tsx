@@ -12,7 +12,7 @@ import LoadingIndicator from "./LoadingIndicator";
  * Check valid new game form
  * Use context to reuse auth user
 */
-const Dashboard: Component = () => { 
+const Dashboard: Component = () => {
 
     const [user, setUser] = createSignal<User>();
     const [loading, setLoading] = createSignal(true);
@@ -33,7 +33,7 @@ const Dashboard: Component = () => {
                 setGames(games);
             }
             setLoading(false);
-        } catch(err) {
+        } catch (err) {
             console.log(err);
         }
     });
@@ -41,22 +41,18 @@ const Dashboard: Component = () => {
     const handleSignOut = () => {
         supabase.auth.signOut();
         navigate("/login");
-    }    
+    }
 
     return (
         <div class="flex flex-col justify-center items-center m-8">
-            <Show when={!loading()} fallback={<LoadingIndicator/>}>
-                <h3>Bem-vindo, {user().user_metadata.display_name ||  user().user_metadata.name || 'anonymous'}!</h3>
+            <Show when={!loading()} fallback={<LoadingIndicator />}>
+                <h3>Welcome, {user().user_metadata.display_name || user().user_metadata.name || 'anonymous'}!</h3>
                 <div class="link link-primary link-hover"><a onClick={handleSignOut}>Sign out</a></div>
                 <button class="btn btn-primary mt-6" onClick={() => (document.getElementById("new_game_modal") as HTMLFormElement).showModal()}>New Game</button>
-                <dialog id="new_game_modal" class="modal modal-bottom sm:modal-middle">
-                    <div class="modal-box">
-                        <NewGame />
-                    </div>
-                </dialog>
+                <NewGame id="new_game_modal" />
                 <div class="mt-8">
-                    <h3 class="font-bold pb-4">Previous Games</h3>
-                    <Show when={games().length > 0} fallback={<h2>No games available.</h2>}>
+                    <h3 class="font-bold pb-4">Saved Games</h3>
+                    <Show when={games().length > 0} fallback={<h2>You haven't saved any games yet.</h2>}>
                         <div class="flex flex-col space-y-4">
                             <For each={games().toReversed()}>
                                 {(game) => (
