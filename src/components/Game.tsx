@@ -180,7 +180,7 @@ const Game: Component = () => {
   }
 
   return (
-    <div class="flex justify-center min-h-screen">
+    <div class="flex justify-center">
       <Show when={!loading()} fallback={<LoadingIndicator />}>
         <div class="w-96 px-4 mb-8">
           {/* Header */}

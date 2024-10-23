@@ -6,7 +6,7 @@ import Register from './components/Register';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import Game from "./components/Game";
-import App from './App';
+import App from './components/App';
 
 const root = document.getElementById('root');
 
