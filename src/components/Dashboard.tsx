@@ -46,7 +46,7 @@ const Dashboard: Component = () => {
     return (
         <div class="flex flex-col justify-center items-center m-8">
             <Show when={!loading()} fallback={<LoadingIndicator/>}>
-                <h3>Bem-vindo, {user().user_metadata.display_name ? user().user_metadata.display_name : 'anonymous'}!</h3>
+                <h3>Bem-vindo, {user().user_metadata.display_name ||  user().user_metadata.name || 'anonymous'}!</h3>
                 <div class="link link-primary link-hover"><a onClick={handleSignOut}>Sign out</a></div>
                 <button class="btn btn-primary mt-6" onClick={() => (document.getElementById("new_game_modal") as HTMLFormElement).showModal()}>New Game</button>
                 <dialog id="new_game_modal" class="modal modal-bottom sm:modal-middle">
