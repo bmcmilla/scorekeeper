@@ -72,7 +72,7 @@ const Register : Component = () => {
                 </div>
                 <div>
                     <span class="text-xs">
-                        Already have an account? <A href="/login" class="text-blue-600 dark:text-blue-500 hover:underline">Sign in here</A>
+                        Already have an account? <A href="/login" class="link-hover link-primary">Sign in here</A>
                     </span>
                 </div>
             </form>
