@@ -27,7 +27,7 @@ const Login: Component = () => {
     };
 
     return (
-        <div class="flex flex-col items-center m-8 h-dvh">
+        <div class="flex flex-col items-center m-8">
             <form>
                 <div class="mb-4">
                     <label class="block text-sm font-bold mb-2" for="email">
