@@ -1,8 +1,8 @@
 import { A } from "@solidjs/router";
+import { Component } from "solid-js";
 import { themeChange } from 'theme-change'
 
-
-const Navbar = () => {
+const Navbar: Component = () => {
 
     themeChange();
 

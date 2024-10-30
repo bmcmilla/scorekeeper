@@ -1,6 +1,7 @@
+import { ParentComponent } from "solid-js";
 import Navbar from "./Navbar";
 
-const App = (props) => {
+const App: ParentComponent = (props) => {
 
   return (
     <div class="min-h-screen flex flex-col">
