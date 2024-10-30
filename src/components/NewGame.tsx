@@ -19,9 +19,7 @@ const NewGame: Component<{ id: string }> = (props) => {
     };
 
     const addPlayer = () => {
-        const arr = [...players];
-        arr.push(playerPlaceholder(arr.length));
-        setPlayers(arr);
+        setPlayers(players.length, playerPlaceholder(players.length));
     }
 
     const removePlayer = () => {
@@ -47,7 +45,7 @@ const NewGame: Component<{ id: string }> = (props) => {
                     <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                 </form>
                 <h3 class="text-lg font-bold pb-4">New Game</h3>
-                <label class="mt-4">Who's playing?</label>
+                <p class="pb-4">Who's playing?</p>
                 <Index each={players}>
                     {(player, index) => (
                         <div class="py-2">
@@ -79,7 +77,7 @@ const NewGame: Component<{ id: string }> = (props) => {
                     )}
                 </Index>
                 <div class="my-4">
-                    <button class="btn btn-primary" onClick={onSubmit}>Start Game</button>
+                    <button class="btn btn-primary" onClick={onSubmit}>Start</button>
                 </div>
             </div>
         </dialog>
