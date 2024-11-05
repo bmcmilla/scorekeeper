@@ -1,4 +1,4 @@
-import { Component, createResource, For, Show } from "solid-js";
+import { Component, createResource, For, Show, Suspense } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
@@ -38,14 +38,14 @@ const Dashboard: Component = () => {
 
     return (
         <div class="flex flex-col justify-center items-center m-8">
-            <Show when={user() && games()} fallback={<LoadingIndicator />}>
-                <h3>Welcome, {user().user_metadata.display_name || user().user_metadata.name || 'anonymous'}!</h3>
+            <Suspense fallback={<LoadingIndicator />}>
+                <h3>Welcome, {user()?.user_metadata.display_name || user()?.user_metadata.name || 'anonymous'}!</h3>
                 <div class="link link-primary link-hover"><a onClick={handleSignOut}>Sign out</a></div>
                 <button class="btn btn-primary mt-6" onClick={() => (document.getElementById("new_game_modal") as HTMLFormElement).showModal()}>New Game</button>
                 <NewGame id="new_game_modal" />
                 <div class="mt-8">
                     <h3 class="font-bold pb-4">Saved Games</h3>
-                    <Show when={games().length > 0} fallback={<h2>You haven't saved any games yet.</h2>}>
+                    <Show when={games()?.length > 0} fallback={<h2>You haven't saved any games yet.</h2>}>
                         <div class="flex flex-col space-y-4">
                             <For each={games().toReversed()}>
                                 {(game) => (
@@ -58,7 +58,7 @@ const Dashboard: Component = () => {
                         </div>
                     </Show>
                 </div>
-            </Show >
+            </Suspense>
         </div >
     )
 }
