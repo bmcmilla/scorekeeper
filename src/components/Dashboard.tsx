@@ -1,11 +1,11 @@
-import { Component, createSignal, For, onMount, Show } from "solid-js";
+import { Component, createResource, For, Show } from "solid-js";
 import { supabase } from "../api/SupabaseClient";
 import { useNavigate } from "@solidjs/router";
 import { User } from "@supabase/supabase-js";
 import { getGames } from "../api/GameClient";
-import { GameMetadata } from "../api/Model";
 import NewGame from "./NewGame";
 import LoadingIndicator from "./LoadingIndicator";
+import { GameMetadata } from "../api/Model";
 
 /** TODO
  * Error state (games not found)
@@ -14,28 +14,21 @@ import LoadingIndicator from "./LoadingIndicator";
 */
 const Dashboard: Component = () => {
 
-    const [user, setUser] = createSignal<User>();
-    const [loading, setLoading] = createSignal(true);
-    const [games, setGames] = createSignal<GameMetadata[]>();
-
     const navigate = useNavigate();
 
-    onMount(async () => {
-        try {
-            const user = await supabase.auth.getUser();
-            if (!user.error) {
-                setUser(user.data.user);
-            } else {
-                navigate("/login");
-            }
-            const games = await getGames();
-            if (games) {
-                setGames(games);
-            }
-            setLoading(false);
-        } catch (err) {
-            console.log(err);
+    // Create a resource for fetching user data
+    const [user] = createResource<User>(async () => {
+        const { data, error } = await supabase.auth.getUser();
+        if (error || !data.user) {
+            navigate("/login");
+            return null;
         }
+        return data.user;
+    });
+
+    // Create a resource for fetching game data
+    const [games] = createResource<GameMetadata[]>(async () => {
+        return await getGames();
     });
 
     const handleSignOut = () => {
@@ -45,7 +38,7 @@ const Dashboard: Component = () => {
 
     return (
         <div class="flex flex-col justify-center items-center m-8">
-            <Show when={!loading()} fallback={<LoadingIndicator />}>
+            <Show when={user() && games()} fallback={<LoadingIndicator />}>
                 <h3>Welcome, {user().user_metadata.display_name || user().user_metadata.name || 'anonymous'}!</h3>
                 <div class="link link-primary link-hover"><a onClick={handleSignOut}>Sign out</a></div>
                 <button class="btn btn-primary mt-6" onClick={() => (document.getElementById("new_game_modal") as HTMLFormElement).showModal()}>New Game</button>
