@@ -173,9 +173,14 @@ const Game: Component = () => {
   const playAudio = (before: number[], after: number[]) => {
     const threshold = Math.min(Math.floor(Math.max(...before) / 100) * 100 + 100, gameData.endScore);
     const crossed = after.some(total => total >= threshold);
-    console.log(`Checking audio before=${before} threshold=${threshold} crossed=${crossed}`);
+    const end = after.some(total => total >= gameData.endScore);
+    console.log(`Checking audio before=${before} threshold=${threshold} crossed=${crossed}, ended=${end}`);
     if (crossed) {
-      audio.play();
+      if (end) {
+        audio.playApplause();
+      } else {
+        audio.playSadTrombone();
+      }
     }
   }
 
